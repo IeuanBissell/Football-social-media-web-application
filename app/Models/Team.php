@@ -19,9 +19,14 @@ class Team extends Model
         return $this->belongsTo(League::class);
     }
 
-    public function fixture()
+    public function homeFixtures()
     {
-        return $this->belongsTo(Fixture::class);
+        return $this->hasMany(Fixture::class, 'home_team_id');
+    }
+
+    public function awayFixtures()
+    {
+        return $this->hasMany(Fixture::class, 'away_team_id');
     }
 
     public function users()

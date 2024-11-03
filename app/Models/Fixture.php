@@ -9,9 +9,14 @@ class Fixture extends Model
 {
     use HasFactory;
 
-    public function teams()
+    public function homeTeam()
     {
-        return $this->hasMany(Team::class);
+        return $this->belongsTo(Team::class, 'home_team_id');
+    }
+
+    public function awayTeam()
+    {
+        return $this->belongsTo(Team::class, 'away_team_id');
     }
 
     public function posts()
