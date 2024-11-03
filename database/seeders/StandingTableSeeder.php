@@ -22,7 +22,7 @@ class StandingTableSeeder extends Seeder
         $s->goals_conceded = 0;
         $s->goal_difference = 3;
         $s->league_id = 1;
-        $team_id = 1;
+        $s->team_id = 1;
         $s->save();
 
         $s = new Standing;
@@ -35,7 +35,7 @@ class StandingTableSeeder extends Seeder
         $s->goals_conceded = 3;
         $s->goal_difference = -3;
         $s->league_id = 1;
-        $team_id = 2;
+        $s->team_id = 2;
         $s->save();
     }
 }
