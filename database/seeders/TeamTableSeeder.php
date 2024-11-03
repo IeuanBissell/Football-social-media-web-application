@@ -16,6 +16,7 @@ class TeamTableSeeder extends Seeder
         $t->name = 'Jelly FC';
         $t->league_id = 1;
         $t->save();
+        $t->users()->attach(1);
 
         $t = new Team;
         $t->name = 'Fish FC';
