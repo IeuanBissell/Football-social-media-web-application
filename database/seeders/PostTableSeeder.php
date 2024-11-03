@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Post;
 use Illuminate\Database\Seeder;
 
 class PostTableSeeder extends Seeder
@@ -12,6 +12,10 @@ class PostTableSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $p = new Post;
+        $p->user_id = 1;
+        $p->fixture_id = 1;
+        $p->content = 'Game today against Jelly FC';
+        $p->save();
     }
 }

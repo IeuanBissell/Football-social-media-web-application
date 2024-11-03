@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Comment;
 use Illuminate\Database\Seeder;
 
 class CommentTableSeeder extends Seeder
@@ -12,6 +12,10 @@ class CommentTableSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+       $c = new Comment;
+       $c->user_id = 1;
+       $c->post_id = 1;
+       $c->content = 'Well played today lads';
+       $c->save();
     }
 }

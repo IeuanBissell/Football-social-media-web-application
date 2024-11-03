@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Team;
 use Illuminate\Database\Seeder;
 
 class TeamTableSeeder extends Seeder
@@ -12,6 +12,14 @@ class TeamTableSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $t = new Team;
+        $t->name = 'Jelly FC';
+        $t->league_id = 1;
+        $t->save();
+
+        $t = new Team;
+        $t->name = 'Fish FC';
+        $t->league_id = 1;
+        $t->save();
     }
 }
