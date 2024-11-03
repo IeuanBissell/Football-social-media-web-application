@@ -9,16 +9,6 @@ class User extends Model
 {
     use HasFactory;
 
-    public function teams()
-    {
-        return $this->belongsToMany(Team::class);
-    }
-
-    public function fixtures()
-    {
-        return $this->belongsToMany(Fixture::class);
-    }
-
     public function posts()
     {
         return $this->hasMany(Post::class);
@@ -27,5 +17,10 @@ class User extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+    
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class);
     }
 }
