@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('players', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->bigInteger('team_id')->unsigned();
+
+            $table->foreign('team_id')->references('id')->on('teams')
+                ->onDelete('cascade')->onUpdate('cascade');
+                
             $table->timestamps();
         });
     }
