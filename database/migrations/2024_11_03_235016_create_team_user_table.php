@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_team', function (Blueprint $table) {
+        Schema::create('team_user', function (Blueprint $table) {
             $table->primary(['user_id','team_id']);
 
             $table->bigInteger('user_id')->unsigned();
