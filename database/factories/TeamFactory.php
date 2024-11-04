@@ -19,7 +19,7 @@ class TeamFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->lastName() + 'FC',
+            'name' => fake()->lastName() . 'FC',
             'league_id' => League::inRandomOrder()->first()->id,
         ];
     }
