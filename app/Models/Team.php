@@ -19,6 +19,12 @@ class Team extends Model
         return $this->belongsTo(League::class);
     }
 
+    public function fixtures()
+    {
+        return $this->hasMany(Fixture::class, 'home_team_id')
+            ->orWhere('away_team_id', $this->id);
+    }
+
     public function homeFixtures()
     {
         return $this->hasMany(Fixture::class, 'home_team_id');
