@@ -23,7 +23,7 @@ class UserTableSeeder extends Seeder
         User::factory()
             ->count(50)
             ->hasAttached(
-                Team::inRandomrder()->take(2)->get()
+                Team::inRandomOrder()->take(2)->get()
             )
             ->create();
     }
