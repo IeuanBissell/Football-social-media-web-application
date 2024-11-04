@@ -18,6 +18,6 @@ class PostTableSeeder extends Seeder
         $p->content = 'Game today against Jelly FC';
         $p->save();
 
-        Post::factory()->count(50)->create();
+        Post::factory(50)->create();
     }
 }

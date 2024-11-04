@@ -19,5 +19,7 @@ class LeagueTableSeeder extends Seeder
         $lg->start_date = Carbon::createFromFormat('Y-m-d', '2024-11-10');
         $lg->end_date = Carbon::createFromFormat('Y-m-d','2025-6-5');
         $lg->save();
+
+        League::factory(5)->create();
     }
 }

@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Team;
+use App\Models\League;
+use App\models\Standing;
+
 use Illuminate\Database\Seeder;
 
 class TeamTableSeeder extends Seeder
@@ -22,5 +25,14 @@ class TeamTableSeeder extends Seeder
         $t->name = 'Fish FC';
         $t->league_id = 1;
         $t->save();
+
+        League::all()->each(function ($league) 
+        {
+            Team::factory()
+                ->count(10)
+                ->for($league)
+                ->has(Standing::factory())
+                ->create();
+        });
     }
 }

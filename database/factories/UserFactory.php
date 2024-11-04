@@ -19,14 +19,11 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-
-        $roles = ['player','coach','ref','parent'];
-
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
-            'role' =>fake()->randomElement($roles),
+            'role' =>fake()->randomElement(['player','coach','ref','parent']),
         ];
     }
 }

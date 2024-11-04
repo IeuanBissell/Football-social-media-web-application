@@ -22,5 +22,7 @@ class FixtureTableSeeder extends Seeder
       $f->home_team_score = 3;
       $f->away_team_score = 0; 
       $f->save();
+
+      Fixture::factory(20)->create();
     }
 }

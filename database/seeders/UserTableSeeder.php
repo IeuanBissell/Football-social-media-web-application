@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Team;
+
 use Illuminate\Database\Seeder;
 
 class UserTableSeeder extends Seeder
@@ -19,7 +20,11 @@ class UserTableSeeder extends Seeder
         $u->password = 'password';
         $u->save();
 
-        User::factory()->has(Team::factory()->count(3))
-            ->count(15)->create();
+        User::factory()
+            ->count(50)
+            ->hasAttached(
+                Team::inRandomrder()->take(2)->get()
+            )
+            ->create();
     }
 }

@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Standing;
+use App\Models\Team;
+
 use Illuminate\Database\Seeder;
 
 class StandingTableSeeder extends Seeder
@@ -37,5 +39,12 @@ class StandingTableSeeder extends Seeder
         $s->league_id = 1;
         $s->team_id = 2;
         $s->save();
+
+        Team::all()->each(function ($team) {
+            Standing::factory()->create([
+                'team_id' => $team->id,
+                'league_id' => $team->league_id,
+            ]);
+        });
     }
 }

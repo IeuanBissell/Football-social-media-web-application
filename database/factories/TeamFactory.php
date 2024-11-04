@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\League;
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +20,7 @@ class TeamFactory extends Factory
     {
         return [
             'name' => fake()->lastName() + 'FC',
-            'league_id' =>fake()->numberBetween(1,5),
+            'league_id' => League::inRandomOrder()->first()->id,
         ];
     }
 }

@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use App\Models\Fixture;
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +20,8 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => fake()->numberBetween(1,50),
-            'fixture_id' => fake()->numberBetween(1,50),
+            'user_id' => User::inRandomOrder()->first()->id,
+            'fixture_id' => Fixture::inRandomOrder()->first()->id,
             'content' => fake()->paragraph(6),
         ];
     }

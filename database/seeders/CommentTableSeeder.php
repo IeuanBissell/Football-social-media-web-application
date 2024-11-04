@@ -17,5 +17,7 @@ class CommentTableSeeder extends Seeder
        $c->post_id = 1;
        $c->content = 'Well played today lads';
        $c->save();
+
+       Comment::factory(100)->create();
     }
 }
