@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Team;
 use App\Models\League;
-use App\models\Standing;
+use App\Models\Standing;
 
 use Illuminate\Database\Seeder;
 
