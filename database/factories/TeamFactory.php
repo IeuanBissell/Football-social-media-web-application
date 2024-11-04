@@ -17,7 +17,8 @@ class TeamFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->lastName() + 'FC',
+            'league_id' =>fake()->numberBetween(1,5),
         ];
     }
 }
