@@ -17,5 +17,7 @@ class PostTableSeeder extends Seeder
         $p->fixture_id = 1;
         $p->content = 'Game today against Jelly FC';
         $p->save();
+
+        Post::factory()->count(50)->create();
     }
 }
