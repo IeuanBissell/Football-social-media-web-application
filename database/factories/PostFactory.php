@@ -22,7 +22,7 @@ class PostFactory extends Factory
         return [
             'user_id' => User::inRandomOrder()->first()->id,
             'fixture_id' => Fixture::inRandomOrder()->first()->id,
-            'content' => fake()->paragraph(6),
+            'content' => fake()->paragraph(2),
         ];
     }
 }
