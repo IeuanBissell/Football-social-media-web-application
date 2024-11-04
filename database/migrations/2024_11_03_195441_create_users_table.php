@@ -17,11 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('role')->default('player');
-            $table->bigInteger('team_id')->unsigned();
-
-            $table->foreign('team_id')->references('id')->on('teams')
-                ->onDelete('cascade')->onUpdate('cascade');
-                
+            
             $table->timestamps();
         });
     }
