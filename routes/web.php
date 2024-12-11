@@ -7,7 +7,7 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function(){
-    return "The home page";
+    return view('home');
 });
 
 Route::get('/food', function () {
