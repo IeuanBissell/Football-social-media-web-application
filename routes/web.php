@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use app\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,3 +14,5 @@ Route::get('/home', function(){
 Route::get('/food', function () {
     return view('food');
 });
+
+Route::get('/users',[UserController::class, 'index']);
