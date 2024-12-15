@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use app\Http\Controllers\UserController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -15,4 +15,4 @@ Route::get('/food', function () {
     return view('food');
 });
 
-Route::get('/users',[UserController::class, 'index']);
+Route::get('/users',[UserController::class, 'index'])->name('users.index');;
