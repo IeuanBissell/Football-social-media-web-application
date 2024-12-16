@@ -20,6 +20,6 @@ Route::get('/fixtures',[FixtureController::class,'index'])->name('fixtures.index
 
 Route::get('/fixtures/{id}',[FixtureController::class, 'show'])->name('fixtures.show');
 
-Route::get('posts/{post}/comments', [CommentController::class, 'index'])->name('posts.comments.index');
+Route::get('/posts/{post}/comments', [CommentController::class, 'getComments'])->name('comments.get');
 
-Route::post('posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');

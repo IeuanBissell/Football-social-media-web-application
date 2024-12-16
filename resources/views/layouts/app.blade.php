@@ -36,8 +36,6 @@
     <footer class="bg-black text-center py-3">
         <p class="text-white-50">&copy; {{ date('Y') }} Football League Social Media</p>
     </footer>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
 </body>
 </html>

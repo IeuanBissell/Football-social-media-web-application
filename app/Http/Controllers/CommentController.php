@@ -74,4 +74,19 @@ class CommentController extends Controller
     {
         //
     }
+
+    public function getComments(Post $post)
+    {
+        // Fetch the comments for the post
+        $comments = $post->comments()->with('user')->get();
+        // Format the comments in a way that the JavaScript can display
+        $formattedComments = $comments->map(function($comment) {
+            return [
+                'user_name' => $comment->user ? $comment->user->name : 'Anonymous',
+                'created_at' => $comment->created_at->diffForHumans(),
+                'content' => $comment->content
+            ];
+        });
+        return response()->json(['comments' => $formattedComments]);
+    }
 }
