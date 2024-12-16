@@ -61,26 +61,31 @@ footer {
 
 /* Pagination Styling */
 .pagination .page-link {
-    background-color: #1a1a1a; /* Dark background */
-    color: #28a745; /* Green text */
-    border-color: #28a745; /* Green border */
+    background-color: #1a1a1a;
+    color: #28a745;
+    border-color: #28a745; 
     transition: all 0.3s ease;
 }
 
 .pagination .page-link:hover {
-    background-color: #28a745; /* Green background on hover */
-    color: #fff; /* White text */
+    background-color: #28a745;
+    color: #fff;
     border-color: #28a745;
 }
 
 .pagination .active .page-link {
-    background-color: #28a745; /* Green active link */
+    background-color: #28a745;
     border-color: #28a745;
     color: #fff;
 }
 
 .pagination .disabled .page-link {
-    background-color: #1a1a1a; /* Dark for disabled */
-    color: #6c757d; /* Gray text */
-    border-color: #6c757d; /* Gray border */
+    background-color: #1a1a1a;
+    color: #6c757d;
+    border-color: #6c757d;
+}
+
+/*Post styling*/
+.post {
+    margin-bottom: 20px;
 }

@@ -39,6 +39,7 @@ class FixtureController extends Controller
     public function show(string $id)
     {
         $fixture = Fixture::with(['homeTeam', 'awayTeam'])->findOrFail($id);
+        $fixture = Fixture::with('posts.user')->findOrFail($id);
         return view('fixtures.show', ['fixture'=> $fixture]);
     }
 
