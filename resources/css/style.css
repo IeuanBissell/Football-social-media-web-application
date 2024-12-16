@@ -58,3 +58,29 @@ footer {
 .btn-success:hover {
     background-color: #218838;
 }
+
+/* Pagination Styling */
+.pagination .page-link {
+    background-color: #1a1a1a; /* Dark background */
+    color: #28a745; /* Green text */
+    border-color: #28a745; /* Green border */
+    transition: all 0.3s ease;
+}
+
+.pagination .page-link:hover {
+    background-color: #28a745; /* Green background on hover */
+    color: #fff; /* White text */
+    border-color: #28a745;
+}
+
+.pagination .active .page-link {
+    background-color: #28a745; /* Green active link */
+    border-color: #28a745;
+    color: #fff;
+}
+
+.pagination .disabled .page-link {
+    background-color: #1a1a1a; /* Dark for disabled */
+    color: #6c757d; /* Gray text */
+    border-color: #6c757d; /* Gray border */
+}
