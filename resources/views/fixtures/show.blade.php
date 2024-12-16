@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
-@section('title','Fixture information')
+@section('title', 'Fixture Details')
 
 @section('content')
-    <ul>
-        <li>Home Team: {{ $fixture->home_team_id}}</li>
-    </ul>
+<div class="container text-center mt-5">
+    <h1>{{ $fixture->homeTeam->name }} vs {{ $fixture->awayTeam->name }}</h1>
+    <p>{{ $fixture->location }}</p>
+    <a href="{{ route('fixtures.index') }}" class="btn btn-primary">Back to Fixtures</a>
 @endsection

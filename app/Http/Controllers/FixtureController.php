@@ -12,6 +12,7 @@ class FixtureController extends Controller
      */
     public function index()
     {
+        $fixtures = Fixture::with(['homeTeam', 'awayTeam'])->get();
         $fixtures = Fixture::paginate(10);
         return view('fixtures.index', ['fixtures'=> $fixtures]);
     }
@@ -37,8 +38,8 @@ class FixtureController extends Controller
      */
     public function show(string $id)
     {
-        $fixtures = Fixture::findOrFail($id);
-        return view('fixtures.show', ['fixtures'=> $fixtures]);
+        $fixture = Fixture::with(['homeTeam', 'awayTeam'])->findOrFail($id);
+        return view('fixtures.show', ['fixture'=> $fixture]);
     }
 
     /**

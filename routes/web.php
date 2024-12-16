@@ -18,6 +18,6 @@ Route::get('/food', function () {
 
 Route::get('/users',[UserController::class, 'index'])->name('users.index');
 
-Route::get('/fixtures',[FixtureController::class,''])->name('fixtures.index');
+Route::get('/fixtures',[FixtureController::class,'index'])->name('fixtures.index');
 
 Route::get('/fixtures/{id}',[FixtureController::class, 'show'])->name('fixtures.show');
