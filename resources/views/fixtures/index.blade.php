@@ -3,33 +3,37 @@
 @section('title', 'Fixture List')
 
 @section('content')
-    <div class="d-flex flex-column align-items-center justify-content-center min-vh-100 text-center">
-        <h1 class="mb-4">Fixtures</h1>
+    <div class="min-vh-100 d-flex flex-column align-items-center justify-content-center text-center" style="background: #121212; color: #f8f9fa;">
+        <h1 class="display-4 mb-4 fw-bold">Upcoming Fixtures</h1>
 
         @if ($fixtures->count())
-            <ul class="list-group w-50">
+            <div class="w-75">
                 @foreach ($fixtures as $fixture)
-                    <li class="list-group-item bg-dark text-white">
-                        <!-- Match Details -->
-                        <div class="mb-2">
-                            <strong class="d-block">{{ $fixture->homeTeam->name }} vs {{ $fixture->awayTeam->name }}</strong>
-                            <small class="text-muted">{{ $fixture->location }}</small>
+                    <a href="{{ route('fixtures.show', ['id' => $fixture->id]) }}" class="card mb-3 text-decoration-none fixture-card">
+                        <div class="card-body bg-dark text-white d-flex justify-content-between align-items-center">
+                            <div class="text-start">
+                                <strong class="d-block fs-5">
+                                    {{ $fixture->homeTeam->name }}
+                                    <span class="text-danger">vs</span>
+                                    {{ $fixture->awayTeam->name }}
+                                </strong>
+                                <small class="d-block text-info">Location: {{ $fixture->location }}</small>
+                                <small class="d-block text-warning">Date: {{ $fixture->match_date }}</small>
+                            </div>
+                            <span class="btn btn-outline-light btn-sm">
+                                View Posts
+                            </span>
                         </div>
-
-                        <!-- Link to More Information -->
-                        <a href="{{ route('fixtures.show', ['id' => $fixture->id]) }}" class="btn btn-success btn-sm">
-                            View More Information
-                        </a>
-                    </li>
+                    </a>
                 @endforeach
-            </ul>
-
-            <!-- Pagination -->
+            </div>
             <div class="mt-4">
                 {{ $fixtures->links('pagination::bootstrap-5') }}
             </div>
         @else
-            <p class="text-muted">No fixtures found.</p>
+            <div class="alert alert-warning w-50 text-center">
+                <p class="mb-0">No fixtures found. Check back later!</p>
+            </div>
         @endif
     </div>
 @endsection

@@ -1,0 +1,38 @@
+/* Global page styling */
+body {
+    background: #1b1b1b; /* Change to a dark gray background */
+    color: #f8f9fa;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Fixture card hover effect */
+.fixture-card {
+    transition: all 0.3s ease; /* Smooth hover transition */
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.fixture-card:hover {
+    background-color: #212529; /* Slightly lighter dark on hover */
+    transform: scale(1.02); /* Subtle zoom-in on hover */
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3); /* Elevated shadow */
+    text-decoration: none; /* Ensure text stays unlinked */
+}
+
+/* Button styling */
+.btn-outline-light {
+    border-color: #66bb6a; /* Green border */
+    color: #66bb6a; /* Green text */
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-light:hover {
+    background-color: #66bb6a; /* Green background */
+    color: white;
+}
+
+/* Compact pagination */
+.pagination {
+    justify-content: center;
+}
