@@ -31,7 +31,7 @@
                         </p>
                         
                         <!-- Comments Overlay - Initially Hidden -->
-                        <div class="comments-overlay d-none mt-4" id="commentsOverlay-{{ $post->id }}">
+                        <div class="comments-overlay d-none" id="commentsOverlay-{{ $post->id }}">
                             <div class="overlay-content">
                                 <h5 class="text-success">Comments for {{ $post->user->name }}'s Post</h5>
                                 
@@ -164,8 +164,27 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Comment added:', data);
-                // After adding, refetch and display the updated comments
-                fetchComments(postId);
+
+                // Dynamically append the new comment to the overlay without reloading
+                const commentsList = document.getElementById('commentsList-' + postId);
+                commentsList.innerHTML += `
+                    <div class="card mb-2 bg-secondary shadow-sm">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-success">
+                                ${data.user_name || 'Anonymous'}
+                            </span>
+                            <small class="text-muted">
+                                Posted just now
+                            </small>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">${data.content}</p>
+                        </div>
+                    </div>
+                `;
+
+                // Clear the comment input field
+                document.getElementById('commentText-' + postId).value = '';
             })
             .catch(error => {
                 console.error('Error adding comment:', error);

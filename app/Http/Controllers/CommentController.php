@@ -35,12 +35,15 @@ class CommentController extends Controller
             'content' =>'required|string|max:1000',
         ]);
 
-        $post->comments()->create([
+        $comment = $post->comments()->create([
             'content' => $validated['content'],
         ]);
-
-        return redirect()->route('posts.comments.index', $post->id)
-        ->with('success', 'Comment added successfully.');
+    
+        // Return the newly created comment as JSON
+        return response()->json([
+            'content' => $comment->content,
+            'created_at' => $comment->created_at->diffForHumans(), // Format the timestamp
+        ]);
     }
 
     /**

@@ -187,31 +187,32 @@ body {
 .post-content {
     background-color: #f9f9f9;
     padding: 15px;
-    border-radius: 10px;
+    border-radius: 8px;
     margin-bottom: 15px;
 }
 
 /* Styling for each comment */
 .card {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     border-radius: 10px;
 }
 
 .card-header {
     background-color: #f0f0f0;
-    padding: 10px;
-    border-radius: 10px 10px 0 0;
+    padding: 8px;
+    border-radius: 8px 8px 0 0;
 }
 
 .card-body {
-    padding: 15px;
+    padding: 10px;
     background-color: #fafafa;
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 8px 8px;
 }
 
 /* Styling for Add Comment form */
 textarea.form-control {
     border-radius: 10px;
+    font-size: 14px;
 }
 
 button.close-comments-btn,
@@ -219,7 +220,7 @@ button.btn-primary {
     border-radius: 10px;
 }
 
-/* Close button styles */
+/* Styling for the close button */
 button.close-comments-btn {
     background-color: #d32f2f;
     color: white;
@@ -240,16 +241,13 @@ button.btn-primary:hover {
 
 /* Styling for comment text */
 .card-body .card-text {
-    font-size: 14px; /* Make the comment text smaller */
+    font-size: 14px;
     color: #333;
 }
 
-/* Make the comment section more compact */
-.card {
-    margin-bottom: 10px;
-    padding: 10px;
-}
-
-.card-header, .card-body {
-    padding: 10px;
+/* Reduce card padding for compactness */
+.card-body .card-text {
+    font-size: 14px;
+    padding: 5px;
+    color: #333;
 }
