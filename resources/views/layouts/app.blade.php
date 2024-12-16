@@ -20,6 +20,16 @@
             <p class="mt-2 text-white-50">Your hub for all things football!</p>
         </div>
     </header>
+    @if ($errors->any())
+        <div>
+            Errors:
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <main class="container my-5">
         @yield('content')
     </main>

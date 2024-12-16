@@ -3,18 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Fixture;
+use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
-class FixtureController extends Controller
+
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Post $post)
     {
-        $fixtures = Fixture::with(['homeTeam', 'awayTeam'])->get();
-        $fixtures = Fixture::paginate(10);
-        return view('fixtures.index', ['fixtures'=> $fixtures]);
+        $comments = $post->comments;
+        return view('comments.index', ['post' => $post, 'comments'=> $comments]);
     }
 
     /**
@@ -28,9 +29,18 @@ class FixtureController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Post $post)
     {
-        //
+        $validated = $request->validate([
+            'content' =>'required|string|max:1000',
+        ]);
+
+        $post->comments()->create([
+            'content' => $validated['content'],
+        ]);
+
+        return redirect()->route('posts.comments.index', $post->id)
+        ->with('success', 'Comment added successfully.');
     }
 
     /**
@@ -38,10 +48,7 @@ class FixtureController extends Controller
      */
     public function show(string $id)
     {
-        $fixture = Fixture::with(['homeTeam', 'awayTeam'])->findOrFail($id);
-        $fixture = Fixture::with('posts.user')->findOrFail($id);
-        $fixture = Fixture::with('posts.comments')->findOrFail($id);
-        return view('fixtures.show', ['fixture'=> $fixture]);
+        //
     }
 
     /**

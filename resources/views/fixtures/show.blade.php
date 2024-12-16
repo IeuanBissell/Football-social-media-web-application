@@ -14,6 +14,10 @@
                     <li class="list-group-item">
                         <h5>{{ $post->user->name }}</h5>
                         <p>{{ $post->content }}</p>
+                        <p>
+                            <strong>{{ $post->comments->count() }} Comments</strong>
+                            <a href="{{ route('posts.comments.index', $post->id) }}" class="btn btn-link">View Comments</a>
+                        </p>
                     </li>
                     <br>
                 @endforeach
