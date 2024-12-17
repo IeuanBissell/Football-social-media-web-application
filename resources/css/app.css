@@ -1,3 +1,60 @@
+/* Tailwind Directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Base Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212; /* Dark background */
+    color: white;
+}
+
+a {
+    color: #4CAF50; /* Green accent color */
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+a:hover {
+    color: #FF1493; /* Neon Pink accent */
+}
+
+/* Form Styles */
+form {
+    background-color: #1a1a1a; /* Dark background for forms */
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+}
+
+form input[type="email"], form input[type="password"], form input[type="text"] {
+    background-color: #2a2a2a; /* Darker background for input fields */
+    color: white;
+    border: 1px solid #4CAF50; /* Border color matching the green */
+}
+
+form .btn-success {
+    background-color: #4CAF50; /* Green button */
+    border: 2px solid #4CAF50;
+    font-weight: bold;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    border-radius: 5px;
+}
+
+form .btn-success:hover {
+    background-color: #388E3C; /* Darker green on hover */
+}
+
+/* Custom Dark Background */
+body {
+    background-color: #0a0a0a; /* Darker background */
+    color: #ffffff; /* White text */
+}
+
+/* Error Handling */
+.alert {
+    background-color: #ff4d4d;
+    border-color: #ff0000;
+}

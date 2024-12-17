@@ -1,17 +1,31 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
+@section('title', 'Dashboard')
+
+@section('content')
+    <div class="text-center">
+        <h2 class="mb-4 text-success">Welcome to Your Dashboard!</h2>
+        <p class="lead mb-5 text-white-50">Manage your profile, check out your posts, and more!</p>
+
+        <div class="row justify-content-center">
+            <div class="col-md-4 mb-3">
+                <div class="card bg-secondary text-white shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">Your Posts</h5>
+                        <p class="card-text">View, edit, or delete your posts.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card bg-secondary text-white shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">Settings</h5>
+                        <p class="card-text">Manage your account settings and preferences.</p>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <a href="{{ route('profile.edit') }}" class="btn btn-success btn-lg mt-4">Edit Profile</a>
     </div>
-</x-app-layout>
+@endsection
