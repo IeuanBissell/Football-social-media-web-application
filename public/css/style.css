@@ -1,0 +1,75 @@
+/* General Styles for the Dashboard */
+.dashboard-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+    padding: 20px;
+}
+
+/* Base Card Styles */
+.card {
+    background-color: #2b2b2b;  /* Dark gray background */
+    color: white;
+    border-radius: 10px;
+    width: 250px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect for Cards */
+.card:hover {
+    transform: translateY(-5px);  /* Lift the card */
+    box-shadow: 0 8px 15px rgba(0, 255, 0, 0.7);  /* Green glow on hover */
+}
+
+/* Card Content */
+.card-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #00FF00;  /* Green accent for headings */
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.card p {
+    font-size: 16px;
+    color: #b0b0b0;  /* Light gray for description text */
+    margin-bottom: 20px;
+}
+
+/* Card Link Styles */
+.card-link {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 16px;
+    color: #00FF00;  /* Green color for links */
+    text-decoration: none;
+    font-weight: 500;
+    border: 2px solid #00FF00;  /* Green border */
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Link Hover Effect */
+.card-link:hover {
+    background-color: #00FF00;  /* Green background on hover */
+    color: #2b2b2b;  /* Dark text on green background */
+    text-decoration: none;
+}
+
+/* Specific Styles for Profile Card */
+.profile-card {
+    background-color: #333333;  /* Slightly darker shade for profile card */
+}
+
+/* Specific Styles for Fixtures Card */
+.fixtures-card {
+    background-color: #444444;  /* Slightly darker shade for fixtures card */
+}
