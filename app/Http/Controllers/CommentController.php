@@ -42,7 +42,8 @@ class CommentController extends Controller
         // Return the newly created comment as JSON
         return response()->json([
             'content' => $comment->content,
-            'created_at' => $comment->created_at->diffForHumans(), // Format the timestamp
+            'created_at' => $comment->created_at->diffForHumans(),
+            'comment_count' => $post->comments->count(),
         ]);
     }
 

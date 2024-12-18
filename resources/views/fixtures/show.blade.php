@@ -23,17 +23,15 @@
                         <h5 class="fw-bold text-success">{{ $post->user->name }}</h5>
                         <p class="mb-2">{{ $post->content }}</p>
                         <p class="post-date mb-3">Posted {{ $post->created_at->diffForHumans() }}</p>
-                        <p class="mb-0">
-                            <!-- View Comments Button -->
-                            <button class="btn btn-outline-warning btn-sm show-comments-btn" data-post-id="{{ $post->id }}">
-                                {{ $post->comments->count() }} Comments
-                            </button>
-                        </p>
-                        
+
+                        <!-- View Comments Button -->
+                        <button class="btn btn-outline-warning btn-sm show-comments-btn" data-post-id="{{ $post->id }}">
+                            {{ $post->comments->count() }} Comments
+                        </button>
+
                         <!-- Comments Overlay - Initially Hidden -->
                         <div class="comments-overlay d-none" id="commentsOverlay-{{ $post->id }}">
                             <div class="overlay-content">
-                                <h5 class="text-success">Comments for {{ $post->user->name }}'s Post</h5>
                                 
                                 <!-- Display the Post content as well -->
                                 <div class="post-content mb-4">
@@ -44,10 +42,13 @@
                                     <p>{{ $post->content }}</p>
                                 </div>
                                 
-                                <div class="comments-list" id="commentsList-{{ $post->id }}"></div>
+                                <!-- List of Comments -->
+                                <div class="comments-list" id="commentsList-{{ $post->id }}">
+                                    <!-- Comments will be fetched and populated here via JavaScript -->
+                                </div>
 
-                                <!-- Add Comment Form -->
-                                <div class="mt-4">
+                                 <!-- Add Comment Form in Overlay -->
+                                 <div class="add-comment-section">
                                     <textarea id="commentText-{{ $post->id }}" class="form-control" rows="2" placeholder="Add your comment..." required></textarea>
                                     <button class="btn btn-primary mt-2" id="addCommentBtn-{{ $post->id }}" data-post-id="{{ $post->id }}">Add Comment</button>
                                 </div>
@@ -96,7 +97,7 @@
                     // Loop through the comments and add them to the list
                     data.comments.forEach(comment => {
                         commentsList.innerHTML += `
-                            <div class="card mb-2 bg-secondary shadow-sm">
+                            <div class="card mb-2 bg-dark text-light shadow-sm comment-card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <span class="fw-bold text-success">
                                         ${comment.user_name || 'Anonymous'}
@@ -145,7 +146,7 @@
             });
         });
 
-        // Function to add a comment
+        // Function to add a comment and update comment count
         function addComment(postId, content) {
             if (!content.trim()) {
                 alert('Comment cannot be empty');
@@ -168,7 +169,7 @@
                 // Dynamically append the new comment to the overlay without reloading
                 const commentsList = document.getElementById('commentsList-' + postId);
                 commentsList.innerHTML += `
-                    <div class="card mb-2 bg-secondary shadow-sm">
+                    <div class="card mb-2 bg-dark text-light shadow-sm comment-card">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <span class="fw-bold text-success">
                                 ${data.user_name || 'Anonymous'}
@@ -185,6 +186,10 @@
 
                 // Clear the comment input field
                 document.getElementById('commentText-' + postId).value = '';
+
+                // Update the comment count on the button dynamically
+                const commentCountButton = document.querySelector(`.show-comments-btn[data-post-id="${postId}"]`);
+                commentCountButton.textContent = `${data.comment_count} Comments`;
             })
             .catch(error => {
                 console.error('Error adding comment:', error);
@@ -192,5 +197,4 @@
         }
     });
 </script>
-
 @endsection

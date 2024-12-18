@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FixtureController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CommentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,5 +25,8 @@ Route::get('/fixtures/{id}', [FixtureController::class, 'show'])->name('fixtures
 
 
 Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
+
+Route::get('/posts/{post}/comments', [CommentController::class, 'getComments'])->name('comments.get');
+Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
 
 require __DIR__.'/auth.php';

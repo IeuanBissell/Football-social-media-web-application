@@ -3,11 +3,11 @@
 @section('title', 'Fixture List')
 
 @section('content')
-    <div class="min-vh-100 d-flex flex-column align-items-center justify-content-center text-center" style="background: #121212; color: #f8f9fa;">
+    <div class="fixture-list-container">
         <h1 class="display-4 mb-4 fw-bold">Upcoming Fixtures</h1>
 
         @if ($fixtures->count())
-            <div class="w-75">
+            <div class="fixture-cards-wrapper">
                 @foreach ($fixtures as $fixture)
                     <a href="{{ route('fixtures.show', ['id' => $fixture->id]) }}" class="card mb-3 text-decoration-none fixture-card">
                         <div class="card-body bg-dark text-white d-flex justify-content-between align-items-center">
