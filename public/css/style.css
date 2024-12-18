@@ -209,7 +209,13 @@ body {
     margin-top: 20px;
 }
 
-/* Comments Overlay */
+.show-comments-btn {
+    border-radius: 5px;
+    font-size: 0.9rem;
+    padding: 5px 15px;
+}
+
+/* Styling for Comments Overlay */
 .comments-overlay {
     position: fixed;
     top: 0;
@@ -236,91 +242,11 @@ body {
     max-height: 80vh;
 }
 
-/* Make Comment Cards Thinner */
-.comment-card {
-    width: 100%;
-    max-width: 80%; /* Make the comment cards thinner */
-    margin: 0 auto 1rem;
-    background: #343a40;
-    border-radius: 8px;
-    padding: 10px;
-}
-
-.show-comments-btn {
-    border-radius: 5px;
-    font-size: 0.9rem;
-    padding: 5px 15px;
-}
-
-/* Textarea and Button Styling */
-textarea#commentText {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
-}
-
-button#addCommentBtn {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
-    margin-top: 10px;
-}
-
-.comments-list {
-    max-height: 400px;
-    overflow-y: auto;
+/* Add Comment Section Styling */
+.add-comment-section {
     margin-bottom: 20px;
 }
 
-/* Remove Double Navbar */
-.navbar {
-    margin-bottom: 0;
-}
-/* Base Styles for the Dark Theme */
-body {
-    background-color: #121212; /* Dark background for the whole page */
-    color: #f8f9fa; /* Light text color */
-    font-family: 'Roboto', sans-serif; /* Modern sans-serif font */
-}
-
-/* General Layout for Pages with Cards */
-.page-container {
-    padding: 50px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
-}
-
-/* Heading Styling */
-.page-container h1 {
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 30px;
-    color: #00FF00; /* Green accent */
-}
-
-/* Styling for Individual Cards */
-.card {
-    background-color: #1a1a1a; /* Dark background for cards */
-    color: #f8f9fa; /* Light text color */
-    border-radius: 12px;
-    padding: 20px;
-    width: 100%;
-    max-width: 350px; /* Max width of the cards */
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    overflow: hidden; /* Ensure content doesn't spill out of the card */
-}
-
-.card:hover {
-    transform: translateY(-5px); /* Slight lift on hover */
-    background-color: #333333; /* Lighter background on hover */
-}
-
-/* Textarea and Button Styling for Add Comment */
 textarea#commentText {
     width: 100%;
     padding: 10px;
@@ -348,60 +274,21 @@ button#addCommentBtn:hover {
     color: #f8f9fa;
 }
 
-/* Remove scroll for posts */
-.post-item {
-    max-height: none; /* Remove any fixed height or scroll for posts */
-    overflow: hidden;
-}
-
-/* Comments Overlay */
-.comments-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-.overlay-content {
-    max-width: 800px;
-    width: 100%;
-    background-color: #212529;
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
-    max-height: 80vh;
-}
-
-/* Make Comment Cards Thinner */
-.comment-card {
-    width: 100%;
-    max-width: 80%; /* Make the comment cards thinner */
-    margin: 0 auto 1rem;
-    background: #343a40;
-    border-radius: 8px;
-    padding: 10px;
-}
-
-/* Display Comments in the Post Section */
+/* Comments List Styling */
 .comments-list {
     max-height: 400px;
     overflow-y: auto;
     margin-bottom: 20px;
 }
 
-.show-comments-btn {
-    border-radius: 5px;
-    font-size: 0.9rem;
-    padding: 5px 15px;
+/* Comment Cards */
+.comment-card {
+    width: 100%;
+    max-width: 80%;
+    margin: 0 auto 1rem;
+    background: #343a40;
+    border-radius: 8px;
+    padding: 10px;
 }
 
 /* Close Button for Overlay */

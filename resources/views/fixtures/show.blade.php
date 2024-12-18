@@ -20,7 +20,12 @@
             <ul class="list-group list-group-flush">
                 @foreach ($fixture->posts as $post)
                     <li class="list-group-item bg-dark text-white p-4 mb-3 rounded shadow-sm post-item">
-                        <h5 class="fw-bold text-success">{{ $post->user->name }}</h5>
+                        <!-- Make the username clickable and link to the user's profile page -->
+                        <h5 class="fw-bold text-success">
+                            <a href="{{ route('user.show', $post->user->id) }}" class="text-success text-decoration-none">
+                            {{ $post->user->name }}
+                            </a>
+                        </h5>
                         <p class="mb-2">{{ $post->content }}</p>
                         <p class="post-date mb-3">Posted {{ $post->created_at->diffForHumans() }}</p>
 
