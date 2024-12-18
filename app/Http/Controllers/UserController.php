@@ -37,7 +37,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::with(['posts', 'comments'])->findOrFail($id);
+        $user = User::with(['posts.user', 'comments.user'])->findOrFail($id);
         return view('users.show', ['user' => $user]);
     }
 

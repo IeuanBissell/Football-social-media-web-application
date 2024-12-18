@@ -11,20 +11,22 @@
             <div class="dashboard-container">
                 <!-- User Profile Card -->
                 <div class="card profile-card">
-                    <div class="card-content">
-                        <h3>My Profile</h3>
-                        <p>Click here to view and edit your profile settings and information.</p>
-                        <a href="{{ route('user.show', auth()->user()->id) }}" class="card-link">Go to Profile</a>
-                    </div>
+                    <a href="{{ route('user.show', auth()->user()->id) }}" class="card-link">
+                        <div class="card-content">
+                            <h3>My Profile</h3>
+                            <p>Click here to view and edit your profile settings and information.</p>
+                        </div>
+                    </a>
                 </div>
             
                 <!-- Fixtures Card -->
                 <div class="card fixtures-card">
-                    <div class="card-content">
-                        <h3>Fixtures</h3>
-                        <p>Click here to see the upcoming fixtures and matches.</p>
-                        <a href="{{ route('fixtures.index') }}" class="card-link">View Fixtures</a>
-                    </div>
+                    <a href="{{ route('fixtures.index') }}" class="card-link">
+                        <div class="card-content">
+                            <h3>Fixtures</h3>
+                            <p>Click here to see the upcoming fixtures and matches.</p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>

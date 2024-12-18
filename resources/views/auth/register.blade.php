@@ -1,13 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="flex justify-center items-center min-h-screen">
-    <div class="w-full max-w-md bg-black text-white rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-bold text-center mb-6">{{ __('Register') }}</h2>
+<div class="page-container flex justify-center items-center">
+    <div class="auth-container">
+        <!-- Page Header -->
+        <h2 class="page-header">{{ __('Register') }}</h2>
         
         <!-- Validation Errors -->
         @if ($errors->any())
-            <div class="bg-red-500 text-white p-4 rounded mb-4">
+            <div class="card bg-red-700 text-white">
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -16,40 +17,37 @@
             </div>
         @endif
 
+        <!-- Registration Form -->
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
             <!-- Name -->
-            <div class="mb-4">
-                <label for="name" class="block text-sm font-medium text-gray-300">{{ __('Name') }}</label>
-                <input type="text" id="name" name="name" required autofocus
-                       class="w-full px-4 py-2 mt-2 bg-gray-800 text-white border border-gray-700 rounded focus:ring focus:ring-green-500 focus:outline-none">
+            <div class="form-group">
+                <label for="name" class="text-green">{{ __('Name') }}</label>
+                <input type="text" id="name" name="name" required autofocus class="form-input">
             </div>
 
             <!-- Email -->
-            <div class="mb-4">
-                <label for="email" class="block text-sm font-medium text-gray-300">{{ __('Email') }}</label>
-                <input type="email" id="email" name="email" required
-                       class="w-full px-4 py-2 mt-2 bg-gray-800 text-white border border-gray-700 rounded focus:ring focus:ring-green-500 focus:outline-none">
+            <div class="form-group">
+                <label for="email" class="text-green">{{ __('Email') }}</label>
+                <input type="email" id="email" name="email" required class="form-input">
             </div>
 
             <!-- Password -->
-            <div class="mb-4">
-                <label for="password" class="block text-sm font-medium text-gray-300">{{ __('Password') }}</label>
-                <input type="password" id="password" name="password" required
-                       class="w-full px-4 py-2 mt-2 bg-gray-800 text-white border border-gray-700 rounded focus:ring focus:ring-green-500 focus:outline-none">
+            <div class="form-group">
+                <label for="password" class="text-green">{{ __('Password') }}</label>
+                <input type="password" id="password" name="password" required class="form-input">
             </div>
 
             <!-- Confirm Password -->
-            <div class="mb-4">
-                <label for="password_confirmation" class="block text-sm font-medium text-gray-300">{{ __('Confirm Password') }}</label>
-                <input type="password" id="password_confirmation" name="password_confirmation" required
-                       class="w-full px-4 py-2 mt-2 bg-gray-800 text-white border border-gray-700 rounded focus:ring focus:ring-green-500 focus:outline-none">
+            <div class="form-group">
+                <label for="password_confirmation" class="text-green">{{ __('Confirm Password') }}</label>
+                <input type="password" id="password_confirmation" name="password_confirmation" required class="form-input">
             </div>
 
-            <!-- Submit -->
+            <!-- Submit Button -->
             <div class="mt-6">
-                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded focus:outline-none focus:ring focus:ring-green-500">
+                <button type="submit" class="btn w-full">
                     {{ __('Register') }}
                 </button>
             </div>

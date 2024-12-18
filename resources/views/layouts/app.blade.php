@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Football League Social Media')</title>
+    <title>@yield('title', 'HalfTime')</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('images/trophy.png') }}">
@@ -18,17 +18,19 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    
+
     <!-- Vite Integration -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-dark text-white font-sans">
+<body class="bg-dark-blue text-light font-sans">
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-black shadow-sm">
+    <nav class="navbar navbar-expand-lg bg-dark-blue shadow-sm border-bottom border-gold">
         <div class="container">
-            <a class="navbar-brand text-success" href="{{ url('/') }}">⚽ Football League Social Media</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand text-gold fw-bold" href="{{ url('/') }}">
+                HalfTime
+            </a>
+            <button class="navbar-toggler text-gold" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -47,7 +49,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
                         </li>
                     @endauth
                 </ul>
@@ -55,22 +59,22 @@
         </div>
     </nav>
 
-    <!-- Page Heading -->
+    <!-- Page Header -->
     @isset($header)
-        <header class="bg-dark text-center text-success py-5 shadow-sm">
+        <header class="bg-dark-blue text-gold py-5 text-center shadow-sm">
             <div class="container">
-                <h1>{{ $header }}</h1>
+                <h1 class="fw-bold">{{ $header }}</h1>
             </div>
         </header>
     @endisset
 
     <!-- Main Content -->
-    <div class="container my-5">
+    <div class="container my-5 page-container">
         @yield('content')
     </div>
 
     <!-- Footer -->
-    <footer class="bg-black text-center py-3">
+    <footer class="bg-dark-blue text-center py-3 border-top border-gold">
         <p class="text-white-50">&copy; {{ date('Y') }} Football League Social Media. All Rights Reserved.</p>
     </footer>
 
