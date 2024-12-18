@@ -58,3 +58,14 @@ body {
     background-color: #ff4d4d;
     border-color: #ff0000;
 }
+
+.card a {
+    display: block;
+    margin: 10px 0;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.card a:hover {
+    text-decoration: underline;
+}

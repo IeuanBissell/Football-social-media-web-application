@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FixtureController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,5 +20,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/fixtures', [FixtureController::class, 'index'])->name('fixtures.index');
+Route::get('/fixtures/{id}', [FixtureController::class, 'show'])->name('fixtures.show');
+
+
+Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
 
 require __DIR__.'/auth.php';
