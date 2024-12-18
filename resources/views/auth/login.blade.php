@@ -1,43 +1,51 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@extends('layouts.app')
 
-    <form method="POST" action="{{ route('login') }}" class="bg-gray-800 p-8 rounded-lg shadow-lg">
-        @csrf
+@section('content')
+<div class="flex justify-center items-center min-h-screen">
+    <div class="w-full max-w-md bg-black text-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-center mb-6">{{ __('Login') }}</h2>
+        
+        <!-- Validation Errors -->
+        @if ($errors->any())
+            <div class="bg-red-500 text-white p-4 rounded mb-4">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-        <!-- Email Address -->
-        <div class="mb-4">
-            <x-input-label for="email" :value="__('Email')" class="text-white" />
-            <x-text-input id="email" class="block mt-1 w-full p-4 bg-gray-700 border border-green-500 text-white" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2 text-red-500" />
-        </div>
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
 
-        <!-- Password -->
-        <div class="mb-4">
-            <x-input-label for="password" :value="__('Password')" class="text-white" />
-            <x-text-input id="password" class="block mt-1 w-full p-4 bg-gray-700 border border-green-500 text-white" type="password" name="password" required autocomplete="current-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2 text-red-500" />
-        </div>
+            <!-- Email -->
+            <div class="mb-4">
+                <label for="email" class="block text-sm font-medium text-gray-300">{{ __('Email') }}</label>
+                <input type="email" id="email" name="email" required autofocus
+                       class="w-full px-4 py-2 mt-2 bg-gray-800 text-white border border-gray-700 rounded focus:ring focus:ring-green-500 focus:outline-none">
+            </div>
 
-        <!-- Remember Me -->
-        <div class="block mb-6">
-            <label for="remember_me" class="inline-flex items-center text-white">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-700 text-green-600 shadow-sm focus:ring-green-500" name="remember">
-                <span class="ms-2 text-sm">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+            <!-- Password -->
+            <div class="mb-4">
+                <label for="password" class="block text-sm font-medium text-gray-300">{{ __('Password') }}</label>
+                <input type="password" id="password" name="password" required
+                       class="w-full px-4 py-2 mt-2 bg-gray-800 text-white border border-gray-700 rounded focus:ring focus:ring-green-500 focus:outline-none">
+            </div>
 
-        <!-- Forgot Password -->
-        <div class="flex items-center justify-between mb-6">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-green-400 hover:text-green-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+            <!-- Remember Me -->
+            <div class="mb-4 flex items-center">
+                <input type="checkbox" name="remember" id="remember" class="mr-2">
+                <label for="remember" class="text-sm text-gray-400">{{ __('Remember Me') }}</label>
+            </div>
 
-            <x-primary-button class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            <!-- Submit -->
+            <div class="mt-6">
+                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded focus:outline-none focus:ring focus:ring-green-500">
+                    {{ __('Log In') }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
