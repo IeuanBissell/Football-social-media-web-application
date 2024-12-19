@@ -38,27 +38,30 @@ class CommentController extends Controller
      */
     public function store(Request $request, Post $post)
     {
-
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'You must be logged in to add a comment.');
-        }
         
         $validated = $request->validate([
             'content' =>'required|string|max:1000',
         ]);
 
-        $comment = $post->comments()->create([
-            'user_id' => Auth::id(),
-            'content' => $validated['content'],
-        ]);
-    
-        // Return the newly created comment as JSON
-        return response()->json([
-            'user_name' => $comment->user->name ?? 'Anonymous',
-            'content' => $comment->content,
-            'created_at' => $comment->created_at->diffForHumans(),
-            'comment_count' => $post->comments->count(),
-        ]);
+        // Ensure the user is authenticated
+        if (Auth::check()) {
+        // Create the comment using the relationship
+            $comment = $post->comments()->create([
+                'user_id' => Auth::id(),
+                'content' => $validated['content'],
+            ]);
+
+        // Optionally return the new comment as a response
+            return response()->json([
+                'user_name' => $comment->user->name,  // User's name associated with the comment
+                'content' => $comment->content,
+                'created_at' => $comment->created_at->diffForHumans(),  // Human-readable time
+                'comment_count' => $post->comments()->count(),  // Update the comment count on the post
+            ]);
+        } else {
+            // Handle case where the user is not authenticated
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
     }
 
     /**

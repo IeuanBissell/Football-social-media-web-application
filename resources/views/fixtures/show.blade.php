@@ -73,9 +73,15 @@
     </div>
 </div>
 
+<!-- Include CSRF token in the meta tag for AJAX requests -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <!-- Inline JavaScript for Comments Overlay -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // Get CSRF token from the meta tag
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
         // Event listener for each "View Comments" button
         document.querySelectorAll('.show-comments-btn').forEach(button => {
             button.addEventListener('click', () => {
@@ -163,7 +169,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-CSRF-TOKEN': csrfToken,  // Include CSRF token in the request
                 },
                 body: JSON.stringify({ content })
             })
