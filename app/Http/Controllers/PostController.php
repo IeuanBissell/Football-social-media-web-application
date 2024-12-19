@@ -58,9 +58,17 @@ class PostController extends Controller
         return response()->json(['comments' => $comments]);
     }
 
-    public function edit(Post $post)
+    public function update(Request $request, Post $post)
     {
         $this->authorize('update', $post);
-        return view('posts.edit', compact('post'));
+    
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+        ]);
+    
+        $post->update($validated);
+    
+        return redirect()->route('posts.show', $post)->with('success', 'Post updated successfully!');
     }
 }

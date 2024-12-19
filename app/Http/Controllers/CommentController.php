@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -85,11 +86,18 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Comment $comment)
     {
-        //
+        $this->authorize('update', $comment);
+    
+        $validated = $request->validate([
+            'content' => 'required|string',
+        ]);
+    
+        $comment->update($validated);
+    
+        return redirect()->route('comments.index', ['post' => $comment->post_id])->with('success', 'Comment updated successfully!');
     }
-
     /**
      * Remove the specified resource from storage.
      */
