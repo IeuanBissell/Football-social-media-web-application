@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\CommentInteractionNotification;
+use App\Notifications\PostInteractionNotification;
 
 
 class CommentController extends Controller
@@ -39,10 +41,24 @@ class CommentController extends Controller
      */
     public function store(Request $request, Post $post)
     {
+        // Notify post owner
+        if ($post->user->id !== Auth::id()) {
+            $post->user->notify(new PostInteractionNotification($post, Auth::user()));
+        }
+
+        // Notify comment parent owner if it's a reply
+        if ($request->parent_id) {
+            $parentComment = Comment::find($request->parent_id);
+            if ($parentComment && $parentComment->user->id !== Auth::id()) {
+                $parentComment->user->notify(new CommentInteractionNotification($parentComment, Auth::user()));
+            }
+        }
         
         $validated = $request->validate([
             'content' =>'required|string|max:1000',
         ]);
+
+        
 
         // Ensure the user is authenticated
         if (Auth::check()) {
@@ -51,8 +67,7 @@ class CommentController extends Controller
                 'user_id' => Auth::id(),
                 'content' => $validated['content'],
             ]);
-
-        // Optionally return the new comment as a response
+            // Optionally return the new comment as a response
             return response()->json([
                 'user_name' => $comment->user->name,  // User's name associated with the comment
                 'content' => $comment->content,
