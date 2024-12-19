@@ -13,10 +13,17 @@ class CommentController extends Controller
      * Display a listing of the resource.
      */
     public function index(Post $post)
-    {
-        $comments = $post->comments;
-        return view('comments.index', ['post' => $post, 'comments'=> $comments]);
-    }
+{
+    return response()->json([
+        'comments' => $post->comments->map(function ($comment) {
+            return [
+                'content' => $comment->content,
+                'user_name' => $comment->user->name ?? 'Anonymous',
+                'created_at' => $comment->created_at->diffForHumans(),
+            ];
+        }),
+    ]);
+}
 
     /**
      * Show the form for creating a new resource.
@@ -47,6 +54,7 @@ class CommentController extends Controller
     
         // Return the newly created comment as JSON
         return response()->json([
+            'user_name' => $comment->user->name ?? 'Anonymous',
             'content' => $comment->content,
             'created_at' => $comment->created_at->diffForHumans(),
             'comment_count' => $post->comments->count(),

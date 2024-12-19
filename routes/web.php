@@ -8,7 +8,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 
 // Fixtures Routes
-Route::resource('fixtures', FixtureController::class)->only(['index', 'show']);
+Route::get('/fixtures', [FixtureController::class, 'index'])->name('fixtures.index');
+Route::get('/fixtures/{fixture}', [FixtureController::class, 'show'])->name('fixtures.show');
 
 // User Routes
 Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
