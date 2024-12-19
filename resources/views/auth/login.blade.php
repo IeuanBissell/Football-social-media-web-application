@@ -1,14 +1,10 @@
 @extends('layouts.app')
 
-@section('head')
-    <link href="{{ asset('css/login.css') }}" rel="stylesheet">
-@endsection
-
 @section('content')
     <div class="flex justify-center items-center min-h-screen bg-gray-100">
-        <div class="w-full max-w-md bg-white text-black rounded-lg shadow-lg p-8 transform hover:scale-105 transition-transform duration-300">
+        <div class="login-container">
             <h2 class="text-3xl font-bold text-center mb-6 text-green-600">{{ __('Login') }}</h2>
-            
+
             <!-- Validation Errors -->
             @if ($errors->any())
                 <div class="bg-red-500 text-white p-4 rounded mb-6">
@@ -26,14 +22,14 @@
                 <!-- Email -->
                 <div class="mb-6">
                     <label for="email" class="block text-sm font-medium text-gray-700">{{ __('Email') }}</label>
-                    <input type="email" id="email" name="email" required autofocus
+                    <input type="email" id="email" name="email" required autofocus placeholder="Enter your email"
                         class="w-full px-4 py-3 mt-2 bg-gray-100 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none transition duration-300">
                 </div>
 
                 <!-- Password -->
                 <div class="mb-6">
                     <label for="password" class="block text-sm font-medium text-gray-700">{{ __('Password') }}</label>
-                    <input type="password" id="password" name="password" required
+                    <input type="password" id="password" name="password" required placeholder="Enter your password"
                         class="w-full px-4 py-3 mt-2 bg-gray-100 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none transition duration-300">
                 </div>
 
