@@ -16,7 +16,7 @@ Route::get('/fixtures', [FixtureController::class, 'index'])->name('fixtures.ind
 Route::get('/fixtures/{id}', [FixtureController::class, 'show'])->name('fixtures.show');
 
 
-Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+Route::get('/users/{id}', [UserController::class, 'show'])->name('user.show');
 
 
 Route::get('/posts/{post}/comments', [CommentController::class, 'index'])->name('comments.index');
