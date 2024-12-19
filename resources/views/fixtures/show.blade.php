@@ -16,18 +16,53 @@
     <div class="posts-section col-md-8 p-5 bg-secondary text-light rounded-start">
         <h3 class="mb-4 text-uppercase fw-bold text-light">Posts</h3>
 
+        <!-- Create Post Form -->
+        <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" name="fixture_id" value="{{ $fixture->id }}">
+            <div class="form-group">
+                <textarea name="content" placeholder="Write a post..." class="form-control" required rows="4"></textarea>
+            </div>
+            <div class="form-group mt-3">
+                <label for="image">Upload Image (optional)</label>
+                <input type="file" name="image" accept="image/*" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Create Post</button>
+        </form>
+
+        <!-- Display Posts -->
         @if($fixture->posts->count())
-            <ul class="list-group list-group-flush">
+            <ul class="list-group list-group-flush mt-4">
                 @foreach ($fixture->posts as $post)
                     <li class="list-group-item bg-dark text-white p-4 mb-3 rounded shadow-sm post-item">
-                        <!-- Make the username clickable and link to the user's profile page -->
                         <h5 class="fw-bold text-success">
                             <a href="{{ route('user.show', $post->user->id) }}" class="text-success text-decoration-none">
-                            {{ $post->user->name }}
+                                {{ $post->user->name }}
                             </a>
                         </h5>
                         <p class="mb-2">{{ $post->content }}</p>
+                        @if($post->image)
+                            <img src="{{ asset('storage/images/' . $post->image) }}" alt="Post Image" class="img-fluid my-3" style="max-width: 100%; height: auto;">
+                        @endif
                         <p class="post-date mb-3">Posted {{ $post->created_at->diffForHumans() }}</p>
+
+                        <!-- Edit and Delete Buttons -->
+                        @if($post->user_id == auth()->id())
+                            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        @elseif(auth()->user()->is_admin)
+                            <!-- Admin can edit or delete any post -->
+                            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        @endif
 
                         <!-- View Comments Button -->
                         <button class="btn btn-outline-warning btn-sm show-comments-btn" data-post-id="{{ $post->id }}">

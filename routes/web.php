@@ -25,7 +25,9 @@ Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name
 Route::middleware(['auth'])->group(function () {
     Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->middleware('can:edit,post')->name('posts.edit'); 
     Route::put('/posts/{post}', [PostController::class, 'update'])->middleware('can:edit,post')->name('posts.update'); 
-
+    
+    Route::put('/posts', [PostController::class,'store'])->name('posts.store');
+    
     Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->middleware('can:edit,comment')->name('comments.edit');
     Route::put('/comments/{comment}', [CommentController::class, 'update'])->middleware('can:edit,comment')->name('comments.update');
     

@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="fixture-list-container">
-        <h1 class="display-4 mb-4 fw-bold">Upcoming Fixtures</h1>
+        <h1 class="display-4 mb-4 fw-bold text-center">Upcoming Fixtures</h1>
 
         @if ($fixtures->count())
             <div class="fixture-cards-wrapper">

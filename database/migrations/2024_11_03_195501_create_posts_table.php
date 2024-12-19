@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('fixture_id')->unsigned()->nullable(); 
             
             $table->string('content');
+            $table->string('image')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
