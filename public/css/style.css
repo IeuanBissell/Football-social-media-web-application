@@ -253,6 +253,15 @@ button:focus {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
+/* Alternate Card Backgrounds (For Fixtures) */
+.card:nth-child(odd) {
+    background-color: #232323; /* Darker background for odd cards */
+}
+
+.card:nth-child(even) {
+    background-color: #2c2c2c; /* Slightly lighter dark background for even cards */
+}
+
 .card.bg-green-600 {
     background-color: #32cd32;
     color: white;
@@ -277,4 +286,67 @@ button:focus {
 
 .m-6 {
     margin: 1.5rem;
+}
+.comments-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.overlay-content {
+    max-width: 800px;
+    width: 100%;
+    background-color: #212529;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+/* Make Comment Cards Thinner */
+.comment-card {
+    width: 100%;
+    max-width: 80%; /* Make the comment cards thinner */
+    margin: 0 auto 1rem;
+    background: #343a40;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.show-comments-btn {
+    border-radius: 5px;
+    font-size: 0.9rem;
+    padding: 5px 15px;
+}
+
+/* Textarea and Button Styling */
+textarea#commentText {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+button#addCommentBtn {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.comments-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 20px;
 }
