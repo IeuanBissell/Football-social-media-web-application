@@ -15,14 +15,14 @@ class UserTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $adminRole = Role::firstOrCreate(['title' => 'Admin']);
-        $userRole = Role::firstOrCreate(['title' => 'User']);
+        $userRole = Role::where('title', 'User')->first();
+        $adminRole = Role::where('title','Admin')->first();
 
         $u = new User;
         $u->name = 'Ieuan';
         $u->email = 'ieuan@email.com';
         $u->password = bcrypt('password');
-        $u->role_id = $userRole->id;
+        $u->role_id = $adminRole->id;
         $u->save();
 
         User::factory()
@@ -32,8 +32,7 @@ class UserTableSeeder extends Seeder
             )
             ->create()
             ->each(function ($user) use ($adminRole, $userRole) {
-                $randomRole = [$adminRole, $userRole][array_rand([0, 1, 2])];
-                $user->role_id = $randomRole->id;
+                $user->role_id = $userRole->id;
                 $user->save();
             });
         }
