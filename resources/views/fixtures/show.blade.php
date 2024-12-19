@@ -22,7 +22,7 @@
                     <li class="list-group-item bg-dark text-white p-4 mb-3 rounded shadow-sm post-item">
                         <!-- Make the username clickable and link to the user's profile page -->
                         <h5 class="fw-bold text-success">
-                            <a href="{{ route('user.show', $post->user->id) }}" class="text-success text-decoration-none">
+                            <a href="{{ route('users.show', $post->user->id) }}" class="text-success text-decoration-none">
                             {{ $post->user->name }}
                             </a>
                         </h5>
