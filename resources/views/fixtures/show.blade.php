@@ -22,7 +22,7 @@
                     <li class="list-group-item bg-dark text-white p-4 mb-3 rounded shadow-sm post-item">
                         <!-- Make the username clickable and link to the user's profile page -->
                         <h5 class="fw-bold text-success">
-                            <a href="{{ route('users.show', $post->user->id) }}" class="text-success text-decoration-none">
+                            <a href="{{ route('user.show', $post->user->id) }}" class="text-success text-decoration-none">
                             {{ $post->user->name }}
                             </a>
                         </h5>
@@ -78,134 +78,101 @@
 
 <!-- Inline JavaScript for Comments Overlay -->
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Get CSRF token from the meta tag
+    document.addEventListener('DOMContentLoaded', function () {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        // Event listener for each "View Comments" button
+        // Show comments when the "View Comments" button is clicked
         document.querySelectorAll('.show-comments-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const postId = button.getAttribute('data-post-id');
-                fetchComments(postId);
-            });
-        });
+            button.addEventListener('click', function () {
+                const postId = this.getAttribute('data-post-id');
+                const overlay = document.getElementById('commentsOverlay-' + postId);
+                const commentsList = document.getElementById('commentsList-' + postId);
 
-        // Function to fetch comments
-        function fetchComments(postId) {
-            const commentsOverlay = document.getElementById('commentsOverlay-' + postId);
-            const commentsList = document.getElementById('commentsList-' + postId);
+                // Show the comments overlay
+                overlay.classList.remove('d-none');
 
-            // Show the comments overlay
-            commentsOverlay.classList.remove('d-none');
-            commentsList.innerHTML = 'Loading comments...';
-
-            // Fetch comments from the server
-            fetch(`/posts/${postId}/comments`)
-                .then(response => response.json())
-                .then(data => {
-                    commentsList.innerHTML = ''; // Clear loading message
-
-                    // Loop through the comments and add them to the list
-                    data.comments.forEach(comment => {
-                        commentsList.innerHTML += `
-                            <div class="card mb-2 bg-dark text-light shadow-sm comment-card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <span class="fw-bold text-success">
-                                        ${comment.user_name || 'Anonymous'}
-                                    </span>
-                                    <small class="text-muted">
-                                        Posted ${comment.created_at}
-                                    </small>
+                // Fetch and display comments
+                fetch(`/posts/${postId}/comments`)
+                    .then(response => response.json())
+                    .then(data => {
+                        commentsList.innerHTML = ''; // Clear any previous loading message
+                        data.comments.forEach(comment => {
+                            commentsList.innerHTML += `
+                                <div class="card mb-2 bg-dark text-light shadow-sm comment-card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold text-success">${comment.user_name}</span>
+                                        <small class="text-muted">Posted ${comment.created_at}</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">${comment.content}</p>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <p class="card-text">${comment.content}</p>
-                                </div>
-                            </div>
-                        `;
+                            `;
+                        });
                     });
-                })
-                .catch(error => {
-                    console.error('Error fetching comments:', error);
-                    commentsList.innerHTML = '<p class="text-danger">Failed to load comments. Please try again.</p>';
-                });
-        }
-
-        // Event listener for "Close" button to hide the overlay
-        document.querySelectorAll('.close-comments-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const postId = button.getAttribute('data-post-id');
-                const commentsOverlay = document.getElementById('commentsOverlay-' + postId);
-                commentsOverlay.classList.add('d-none'); // Hide the overlay
             });
         });
 
-        // Close the overlay when clicking outside of the content area
+        // Close the comments overlay when the close button is clicked
+        document.querySelectorAll('.close-comments-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const postId = this.getAttribute('data-post-id');
+                const overlay = document.getElementById('commentsOverlay-' + postId);
+                overlay.classList.add('d-none');
+            });
+        });
+
+        // Close the overlay when clicking outside of the content area (on the overlay background)
         document.querySelectorAll('.comments-overlay').forEach(overlay => {
-            overlay.addEventListener('click', (event) => {
-                if (event.target === overlay) { // If the click was on the background
+            overlay.addEventListener('click', function (event) {
+                if (event.target === overlay) { // If the click was on the background area
                     overlay.classList.add('d-none');
                 }
             });
         });
 
-        // Event listener for "Add Comment" button
+        // Add comment functionality
         document.querySelectorAll('.btn[id^="addCommentBtn"]').forEach(button => {
-            button.addEventListener('click', () => {
-                const postId = button.getAttribute('data-post-id');
+            button.addEventListener('click', function () {
+                const postId = this.getAttribute('data-post-id');
                 const commentText = document.getElementById('commentText-' + postId).value;
-                addComment(postId, commentText);
+
+                if (!commentText.trim()) {
+                    alert('Comment cannot be empty');
+                    return;
+                }
+
+                fetch(`/posts/${postId}/comments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: JSON.stringify({ content: commentText }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const commentsList = document.getElementById('commentsList-' + postId);
+                    commentsList.innerHTML += `
+                        <div class="card mb-2 bg-dark text-light shadow-sm comment-card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-success">${data.user_name}</span>
+                                <small class="text-muted">Posted just now</small>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">${data.content}</p>
+                            </div>
+                        </div>
+                    `;
+
+                    // Clear the textarea and update comment count
+                    document.getElementById('commentText-' + postId).value = '';
+                    const commentCountButton = document.querySelector(`.show-comments-btn[data-post-id="${postId}"]`);
+                    commentCountButton.textContent = `${data.comment_count} Comments`;
+                });
             });
         });
-
-        // Function to add a comment and update comment count
-        function addComment(postId, content) {
-            if (!content.trim()) {
-                alert('Comment cannot be empty');
-                return;
-            }
-
-            // Send AJAX request to add the comment
-            fetch(`/posts/${postId}/comments`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,  // Include CSRF token in the request
-                },
-                body: JSON.stringify({ content })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Comment added:', data);
-
-                // Dynamically append the new comment to the overlay without reloading
-                const commentsList = document.getElementById('commentsList-' + postId);
-                commentsList.innerHTML += `
-                    <div class="card mb-2 bg-dark text-light shadow-sm comment-card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <span class="fw-bold text-success">
-                                ${data.user_name || 'Anonymous'}
-                            </span>
-                            <small class="text-muted">
-                                Posted just now
-                            </small>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">${data.content}</p>
-                        </div>
-                    </div>
-                `;
-
-                // Clear the comment input field
-                document.getElementById('commentText-' + postId).value = '';
-
-                // Update the comment count on the button dynamically
-                const commentCountButton = document.querySelector(`.show-comments-btn[data-post-id="${postId}"]`);
-                commentCountButton.textContent = `${data.comment_count} Comments`;
-            })
-            .catch(error => {
-                console.error('Error adding comment:', error);
-            });
-        }
     });
 </script>
+
 @endsection
