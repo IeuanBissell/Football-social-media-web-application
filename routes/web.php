@@ -18,6 +18,22 @@ Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
 Route::get('/posts/{post}/comments', [CommentController::class, 'index'])->name('comments.index');
 Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
 
+// Middleware to ensure only the user who created a post or a comment can edit it
+Route::middleware(['auth'])->group(function () {
+    // Edit Post (only for post author or user with the right role)
+    Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->middleware('can:edit,post')->name('posts.edit'); 
+    Route::put('/posts/{post}', [PostController::class, 'update'])->middleware('can:edit,post')->name('posts.update'); 
+
+    // Edit Comment (only for comment author or user with the right role)
+    Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->middleware('can:edit,comment')->name('comments.edit');
+    Route::put('/comments/{comment}', [CommentController::class, 'update'])->middleware('can:edit,comment')->name('comments.update');
+    
+    // Delete Post (only for post author or user with the right role)
+    Route::delete('/posts/{post}', [PostController::class, 'destroy'])->middleware('can:delete,post')->name('posts.destroy');
+    
+    // Delete Comment (only for comment author or user with the right role)
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->middleware('can:delete,comment')->name('comments.destroy');
+});
 
 Route::get('/', function () {
     return view('welcome');

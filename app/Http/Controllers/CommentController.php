@@ -77,7 +77,9 @@ class CommentController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $this->authorize('update', $id); // Check if the user can update the comment
+
+        return view('comments.edit', compact('comment'));
     }
 
     /**

@@ -23,9 +23,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'You must be logged in to post.');
-        }
+        $this->authorize('create', Post::class);
 
         $validated = $request->validate([
             'content' => 'required|string|max:500',
@@ -58,5 +56,11 @@ class PostController extends Controller
         });
 
         return response()->json(['comments' => $comments]);
+    }
+
+    public function edit(Post $post)
+    {
+        $this->authorize('update', $post);
+        return view('posts.edit', compact('post'));
     }
 }
