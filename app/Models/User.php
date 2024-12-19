@@ -47,6 +47,14 @@ class User extends Authenticatable
         ];
     }
 
+    public function canEdit($item)
+    {
+        if ($this->role->title === 'Admin') {
+            return true;
+        }
+        return $this->id === $item->user_id;
+    }
+
     public function posts()
     {
         return $this->hasMany(Post::class);

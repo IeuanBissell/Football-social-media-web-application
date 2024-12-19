@@ -31,11 +31,17 @@ class CommentController extends Controller
      */
     public function store(Request $request, Post $post)
     {
+
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'You must be logged in to add a comment.');
+        }
+        
         $validated = $request->validate([
             'content' =>'required|string|max:1000',
         ]);
 
         $comment = $post->comments()->create([
+            'user_id' => Auth::id(),
             'content' => $validated['content'],
         ]);
     

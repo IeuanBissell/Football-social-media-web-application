@@ -4,7 +4,19 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FixtureController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
+
+// Fixtures Routes
+Route::resource('fixtures', FixtureController::class)->only(['index', 'show']);
+
+// User Routes
+Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+
+// Posts Routes
+Route::get('/posts/{post}/comments', [CommentController::class, 'index'])->name('comments.index');
+Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,13 +32,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/fixtures', [FixtureController::class, 'index'])->name('fixtures.index');
-Route::get('/fixtures/{id}', [FixtureController::class, 'show'])->name('fixtures.show');
-
-
-Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
-
-Route::get('/posts/{post}/comments', [CommentController::class, 'getComments'])->name('comments.get');
-Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
 
 require __DIR__.'/auth.php';
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
