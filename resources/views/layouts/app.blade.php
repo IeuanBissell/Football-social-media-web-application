@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,19 +19,20 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <!-- Vite Integration -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="bg-dark-blue text-light font-sans">
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-dark-blue shadow-sm border-bottom border-gold">
         <div class="container">
-            <a class="navbar-brand text-gold fw-bold" href="{{ url('/') }}">
-                HalfTime
-            </a>
-            <button class="navbar-toggler text-gold" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand text-gold fw-bold" href="{{ url('/') }}">HalfTime</a>
+            <button class="navbar-toggler text-gold" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -75,7 +77,7 @@
 
     <!-- Footer -->
     <footer class="bg-dark-blue text-center py-3 border-top border-gold">
-        <p class="text-white-50">&copy; {{ date('Y') }} Football League Social Media. All Rights Reserved.</p>
+        <p class="text-white-50">&copy; {{ date('Y') }} HalfTime. All Rights Reserved.</p>
     </footer>
 
     <!-- Error Handling -->
@@ -97,4 +99,5 @@
     <!-- Custom JS -->
     <script src="{{ asset('js/custom.js') }}"></script>
 </body>
+
 </html>
