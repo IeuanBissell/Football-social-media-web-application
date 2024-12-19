@@ -17,7 +17,6 @@ class UserTableSeeder extends Seeder
     {
         $adminRole = Role::firstOrCreate(['title' => 'Admin']);
         $userRole = Role::firstOrCreate(['title' => 'User']);
-        $guestRole = Role::firstOrCreate(['title' => 'Guest']);
 
         $u = new User;
         $u->name = 'Ieuan';
@@ -32,8 +31,8 @@ class UserTableSeeder extends Seeder
             Team::inRandomOrder()->take(2)->get()
             )
             ->create()
-            ->each(function ($user) use ($adminRole, $userRole, $guestRole) {
-                $randomRole = [$adminRole, $userRole, $guestRole][array_rand([0, 1, 2])];
+            ->each(function ($user) use ($adminRole, $userRole) {
+                $randomRole = [$adminRole, $userRole][array_rand([0, 1, 2])];
                 $user->role_id = $randomRole->id;
                 $user->save();
             });

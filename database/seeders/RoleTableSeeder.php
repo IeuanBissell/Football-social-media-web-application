@@ -15,6 +15,5 @@ class RoleTableSeeder extends Seeder
     {
         Role::firstOrCreate(['title' => 'Admin']);
         Role::firstOrCreate(['title' => 'User']);
-        Role::firstOrCreate(['title' => 'Guest']);
     }
 }
