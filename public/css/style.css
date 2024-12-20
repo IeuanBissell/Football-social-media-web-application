@@ -111,3 +111,64 @@ a:hover {
 .shadow-lg {
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
+
+.profile-container {
+    padding: 30px 15px;
+}
+
+.profile-title {
+    font-size: 2.5rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    color: #333;
+}
+
+.text-muted {
+    color: #6c757d;
+}
+
+.section-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.cards-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.card-body {
+    padding-top: 10px;
+}
+
+.card-text {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.no-content-message {
+    font-size: 1.25rem;
+    color: #6c757d;
+    text-align: center;
+}
