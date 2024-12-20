@@ -15,15 +15,15 @@ return new class extends Migration
             $table->id();
 
             $table->bigInteger('user_id')->unsigned(); 
-            $table->bigInteger('fixture_id')->unsigned(); 
+            $table->bigInteger('fixture_id')->unsigned()->nullable(); 
             
             $table->string('content');
             $table->string('image')->nullable();
 
-            $table->foreignId('user_id')->references('id')->on('users')
+            $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
 
-            $table->foreignId('fixture_id')->references('id')->on('fixtures')
+            $table->foreign('fixture_id')->references('id')->on('fixtures')
                 ->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();
