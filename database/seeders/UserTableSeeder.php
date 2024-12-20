@@ -15,14 +15,11 @@ class UserTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $userRole = Role::where('title', 'User')->first();
-        $adminRole = Role::where('title','Admin')->first();
 
         $u = new User;
         $u->name = 'Ieuan';
         $u->email = 'ieuan@email.com';
         $u->password = bcrypt('password');
-        $u->role_id = $adminRole->id;
         $u->save();
 
         User::factory()
@@ -30,10 +27,6 @@ class UserTableSeeder extends Seeder
             ->hasAttached(
             Team::inRandomOrder()->take(2)->get()
             )
-            ->create()
-            ->each(function ($user) use ($adminRole, $userRole) {
-                $user->role_id = $userRole->id;
-                $user->save();
-            });
+            ->create();
         }
     }

@@ -32,11 +32,13 @@ class PostController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
+        
         // Create a new post associated with the fixture
         $post = new Post([
             'user_id' => Auth::id(),
             'content' => $request->content,
             'fixture_id' => $fixture_id,
+            'image' => $request->image,
         ]);
 
         // Handle file upload if an image is provided
@@ -44,18 +46,7 @@ class PostController extends Controller
             $post->image = $request->file('image')->store('images', 'public');
         }
 
-        // Save the post
-        $post->save();
-
-        if ($request->ajax()) {
-            // Return JSON response for AJAX
-            return response()->json([
-                'success' => true,
-                'post' => $post,
-                'message' => 'Post created successfully!'
-            ]);
-        }
-
+    
         // Redirect to the fixture's show page if not an AJAX request
         return redirect()->route('fixtures.show', $fixture_id);
     }
