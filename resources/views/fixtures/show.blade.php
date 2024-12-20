@@ -2,80 +2,80 @@
 
 @section('content')
 <div class="container">
-    <div class="row">
-        <!-- Fixture Details -->
-        <div class="col-md-12">
-            <h1 class="display-5">{{ $fixture->homeTeam->name }} vs {{ $fixture->awayTeam->name }}</h1>
-            <p><strong>Location:</strong> {{ $fixture->location }}</p>
-            <p><strong>Date:</strong> {{ $fixture->match_date }}</p>
+    <!-- Fixture Details Section -->
+    <div class="row mb-4">
+        <div class="col-md-12 text-center">
+            <h1 class="display-4 text-dark">{{ $fixture->homeTeam->name }} vs {{ $fixture->awayTeam->name }}</h1>
+            <p><strong class="text-dark">Location:</strong> {{ $fixture->location }}</p>
+            <p><strong class="text-dark">Date:</strong> {{ $fixture->match_date }}</p>
         </div>
     </div>
 
-    <!-- Post Creation Form -->
-    <div class="row mt-4">
+    <!-- Post Creation Form Section -->
+    <div class="row mb-4">
         <div class="col-md-12">
-            <h3>Create a Post</h3>
+            <h3 class="text-success">Create a Post</h3>
             <form action="{{ route('posts.store', $fixture->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group mb-3">
                     <textarea name="content" class="form-control" rows="3" placeholder="Write your post..." required></textarea>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="image">Upload Image (optional)</label>
+                    <label for="image" class="text-muted">Upload Image (optional)</label>
                     <input type="file" name="image" id="image" class="form-control" accept="image/*">
                 </div>
-                <button type="submit" class="btn btn-primary">Post</button>
+                <button type="submit" class="btn btn-custom">Post</button>
             </form>
         </div>
     </div>
 
     <!-- Posts Section -->
-    <div class="row mt-5">
+    <div class="row">
         <div class="col-md-12">
-            <h3>Posts</h3>
+            <h3 class="text-dark">Posts</h3>
             @if($fixture->posts->count())
-                <ul class="list-group">
+                <div class="list-group">
                     @foreach($fixture->posts as $post)
-                        <li class="list-group-item mb-4 bg-light">
+                        <div class="list-group-item mb-4 bg-light border-0 shadow-sm">
                             <!-- Post Content -->
-                            <div>
+                            <div class="d-flex justify-content-between">
                                 <h5 class="fw-bold text-success">
-                                    <a href="{{ route('user.show', $post->user->id) }}" class="text-decoration-none">
+                                    <a href="{{ route('user.show', $post->user->id) }}" class="text-decoration-none text-dark">
                                         {{ $post->user->name }}
                                     </a>
                                 </h5>
-                                <p>{{ $post->content }}</p>
-                                @if($post->image)
-                                    <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="img-fluid my-3">
-                                @endif
-                                <p class="text-muted small">Posted {{ $post->created_at->diffForHumans() }}</p>
+                                <span class="badge bg-secondary text-light">{{ $post->created_at->diffForHumans() }}</span>
                             </div>
+                            <p>{{ $post->content }}</p>
+                            @if($post->image)
+                                <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="img-fluid my-3 rounded">
+                            @endif
 
                             <!-- Edit and Delete Options for the Post -->
                             @can('edit', $post)
-                            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-warning">Edit</a>
                             @endcan
 
                             @can('delete', $post)
-                            <form action="{{ route('posts.destroy', ['fixture_id' => $post->fixture_id, 'post' => $post->id]) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form>
+                                <form action="{{ route('posts.destroy', ['fixture_id' => $post->fixture_id, 'post' => $post->id]) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
                             @endcan
 
                             <!-- Comments Section -->
                             <div class="mt-4">
                                 <h6>Comments</h6>
-                                <ul class="list-group">
+                                <div class="list-group">
                                     @foreach($post->comments as $comment)
-                                        <li class="list-group-item">
+                                        <div class="list-group-item bg-light">
                                             <p class="mb-1">
                                                 <strong>{{ $comment->user->name }}:</strong> {{ $comment->content }}
                                             </p>
                                             <p class="text-muted small">Commented {{ $comment->created_at->diffForHumans() }}</p>
 
-                                            <!-- Edit and Delete Options for the Comments -->
+                                            <!-- Edit and Delete Options for the Comment -->
                                             @can('edit', $comment)
                                                 <a href="{{ route('comments.edit', $comment->id) }}" class="btn btn-sm btn-warning">Edit</a>
                                             @endcan
@@ -87,9 +87,9 @@
                                                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                                 </form>
                                             @endcan
-                                        </li>
+                                        </div>
                                     @endforeach
-                                </ul>
+                                </div>
                             </div>
 
                             <!-- Add Comment Form -->
@@ -99,14 +99,14 @@
                                 <div class="form-group">
                                     <textarea name="content" class="form-control" rows="2" placeholder="Add a comment..." required></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-sm btn-primary mt-2">Comment</button>
+                                <button type="submit" class="btn btn-sm btn-custom mt-2">Comment</button>
                             </form>
                             @endauth
-                        </li>
+                        </div>
                     @endforeach
-                </ul>
+                </div>
             @else
-                <p>No posts yet for this fixture. Be the first to post!</p>
+                <p class="text-muted">No posts yet for this fixture. Be the first to post!</p>
             @endif
         </div>
     </div>
