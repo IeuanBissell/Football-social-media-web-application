@@ -38,7 +38,7 @@ class FixtureController extends Controller
      */
     public function show(string $id)
     {
-        $fixture = Fixture::with(['homeTeam', 'awayTeam', 'posts.user', 'posts.comments'])
+        $fixture = Fixture::with(['homeTeam', 'awayTeam', 'posts.user', 'posts.comments.user'])
                       ->findOrFail($id);
         return view('fixtures.show', ['fixture'=> $fixture]);
     }

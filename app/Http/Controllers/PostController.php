@@ -2,113 +2,121 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Fixture;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-
-
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $posts = Post::with('user', 'fixture')->get();
-        return view('posts.index', compact('posts'));
+        // Get all posts, comments, and users associated with the posts
+        $posts = Post::with('user', 'comments')->latest()->get();
+        return view('fixtures.show', compact('posts'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function create($fixture_id)
     {
-        $this->authorize('create', Post::class);
-        
-        $validated = $request->validate([
-            'content' => 'required|string|max:500',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'fixture_id' => 'required|exists:fixtures,id',
+        // Ensure the fixture exists
+        $fixture = Fixture::findOrFail($fixture_id);
+        return view('posts.create', compact('fixture'));
+    }
+
+    public function store(Request $request, $fixture_id)
+    {
+        // Validate request
+        $request->validate([
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $imagePath = null;
+        // Create a new post associated with the fixture
+        $post = new Post([
+            'user_id' => Auth::id(),
+            'content' => $request->content,
+            'fixture_id' => $fixture_id,
+        ]);
+
+        // Handle file upload if an image is provided
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public');
-        } else {
-            $imagePath = null;
+            $post->image = $request->file('image')->store('images', 'public');
         }
 
-        $post = Post::create([
-            'content' => $validated['content'],
-            'fixture_id' => $validated['fixture_id'],
-            'user_id' => Auth::id(),
-            'image' => $imagePath,
-        ]);
+        // Save the post
+        $post->save();
 
-        return response()->json([
-            'success' => true,
-            'user_name' => $post->user->name,
-            'post' => $post,
-            'image_url' => $post->image ? asset('storage/' . $post->image) : null,
-            'created_at' => $post->created_at->diffForHumans(),
-        ]);
+        // Redirect to the fixture's show page
+        return redirect()->route('fixtures.show', $fixture_id);
     }
 
-    /**
-     * Fetch comments for a post (AJAX).
-     */
+    public function edit($fixture_id, Post $post)
+    {
+        // Ensure the post belongs to the authenticated user and authorize
+        $this->authorize('update', $post);
+
+        // Ensure fixture ID matches the post's fixture ID
+        if ($post->fixture_id != $fixture_id) {
+            abort(404); // If fixture_id mismatch, throw error
+        }
+
+        return view('posts.edit', compact('post', 'fixture_id'));
+    }
+
+    public function update(Request $request, $fixture_id, Post $post)
+    {
+        // Authorize and validate
+        $this->authorize('update', $post);
+
+        $request->validate([
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        // Ensure fixture ID matches the post's fixture ID
+        if ($post->fixture_id != $fixture_id) {
+            abort(404);
+        }
+
+        // Update post content
+        $post->content = $request->content;
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            Storage::delete('public/' . $post->image);
+            $post->image = $request->file('image')->store('images', 'public');
+        }
+
+        // Save the updated post
+        $post->save();
+
+        return redirect()->route('fixtures.show', $fixture_id);
+    }
+
+    public function destroy($fixture_id, Post $post)
+    {
+        // Authorize and ensure post belongs to the authenticated user
+        $this->authorize('delete', $post);
+
+        // Ensure fixture ID matches the post's fixture ID
+        if ($post->fixture_id != $fixture_id) {
+            abort(404); // If fixture_id mismatch, throw error
+        }
+
+        // Delete associated image from storage
+        Storage::delete('public/' . $post->image);
+
+        // Delete the post
+        $post->delete();
+
+        return redirect()->route('fixtures.show', $fixture_id);
+    }
+
     public function show(Post $post)
     {
-        $post->load('comments.user');
-
-        $comments = $post->comments->map(function ($comment) {
-            return [
-                'id' => $comment->id,
-                'user_name' => $comment->user->name ?? 'Anonymous',
-                'content' => $comment->content,
-                'created_at' => $comment->created_at->diffForHumans(),
-            ];
-        });
-
-        return response()->json(['comments' => $comments]);
-    }
-
-    public function edit(Post $post)
-    {
-        $this->authorize('edit', $post); // Ensure the user has permission to edit
-        return view('posts.edit', compact('post'));
-    }
-
-    // Update the post
-    public function update(Request $request, Post $post)
-    {
-        $this->authorize('edit', $post); // Ensure the user has permission to edit
-
-        // Validate the data
-        $request->validate([
-            'content' => 'required|string|max:500',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        // Update the content
-        $post->update(['content' => $request->content]);
-
-        // Handle image update if a new image is provided
-        if ($request->hasFile('image')) {
-            // Delete old image if it exists
-            if ($post->image) {
-                Storage::delete('public/' . $post->image);
-            }
-
-            // Store new image
-            $newImagePath = $request->file('image')->store('images', 'public');
-            $post->image = $newImagePath;
-            $post->save();
-        }
-
-        return redirect()->route('fixtures.show', $post->fixture_id)
-                         ->with('success', 'Post updated successfully!');
+        // Show the single post's details (no need for fixture_id here)
+        return view('posts.show', compact('post'));
     }
 }

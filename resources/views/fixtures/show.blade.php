@@ -1,269 +1,114 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid vh-100 d-flex flex-row p-0">
-    <!-- Left Column: Fixture Details -->
-    <div class="fixture-details col-md-4 d-flex flex-column align-items-start justify-content-center p-4 bg-dark text-white rounded-end shadow">
-        <h1 class="display-6 fw-bold text-success mb-3">
-            {{ $fixture->homeTeam->name }} <span class="text-danger">vs</span> {{ $fixture->awayTeam->name }}
-        </h1>
-        <p class="fs-5 mb-3">Location: {{ $fixture->location }}</p>
-        <p class="fs-5 mb-4">Date: {{ $fixture->match_date }}</p>
-        <a href="{{ route('fixtures.index') }}" class="btn btn-success btn-lg shadow">Back to Fixtures</a>
-        
-        <!-- Create Post Form -->
-        <form id="createPostForm" method="POST" enctype="multipart/form-data">
-            @csrf
-            <input type="hidden" name="fixture_id" value="{{ $fixture->id }}">
-            <div class="form-group">
-                <textarea name="content" id="postContent" placeholder="Write a post..." class="form-control" required rows="4"></textarea>
-            </div>
-            <div class="form-group mt-3">
-                <label for="image">Upload Image (optional)</label>
-                <input type="file" name="image" accept="image/*" class="form-control" id="postImage">
-            </div>
-            <button type="submit" id="createPostBtn" class="btn btn-primary mt-3">Create Post</button>
-        </form>
+<div class="container">
+    <div class="row">
+        <!-- Fixture Details -->
+        <div class="col-md-12">
+            <h1 class="display-5">{{ $fixture->homeTeam->name }} vs {{ $fixture->awayTeam->name }}</h1>
+            <p><strong>Location:</strong> {{ $fixture->location }}</p>
+            <p><strong>Date:</strong> {{ $fixture->match_date }}</p>
+        </div>
     </div>
 
-    <!-- Right Column: Posts Section -->
-    <div class="posts-section col-md-8 p-5 bg-secondary text-light rounded-start">
-        <h3 class="mb-4 text-uppercase fw-bold text-light">Posts</h3>
+    <!-- Post Creation Form -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h3>Create a Post</h3>
+            <form action="{{ route('posts.store', $fixture->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group mb-3">
+                    <textarea name="content" class="form-control" rows="3" placeholder="Write your post..." required></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="image">Upload Image (optional)</label>
+                    <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                </div>
+                <button type="submit" class="btn btn-primary">Post</button>
+            </form>
+        </div>
+    </div>
 
-        @if($fixture->posts->count())
-            <ul class="list-group list-group-flush">
-                @foreach ($fixture->posts as $post)
-                    <li class="list-group-item bg-dark text-white p-4 mb-3 rounded shadow-sm post-item">
-                        <!-- Make the username clickable and link to the user's profile page -->
-                        <h5 class="fw-bold text-success">
-                            <a href="{{ route('user.show', $post->user->id) }}" class="text-success text-decoration-none">
-                                {{ $post->user->name }}
-                            </a>
-                        </h5>
-                        <p class="mb-2">{{ $post->content }}</p>
-                        <p class="post-date mb-3">Posted {{ $post->created_at->diffForHumans() }}</p>
-
-                        <!-- View Comments Button -->
-                        <button class="btn btn-outline-warning btn-sm show-comments-btn" data-post-id="{{ $post->id }}">
-                            {{ $post->comments->count() }} Comments
-                        </button>
-
-                        <!-- Comments Overlay - Initially Hidden -->
-                        <div class="comments-overlay d-none" id="commentsOverlay-{{ $post->id }}">
-                            <div class="overlay-content">
-                                <!-- Display the Post content as well -->
-                                <div class="post-content mb-4">
-                                    <div class="post-header">
-                                        <span class="fw-bold">{{ $post->user->name }}</span>
-                                        <small class="text-muted">Posted {{ $post->created_at->diffForHumans() }}</small>
-                                    </div>
-                                    <p>{{ $post->content }}</p>
-                                </div>
-
-                                <!-- List of Comments -->
-                                <div class="comments-list" id="commentsList-{{ $post->id }}">
-                                    <!-- Comments will be fetched and populated here via JavaScript -->
-                                </div>
-
-                                <!-- Add Comment Form in Overlay -->
-                                <div class="add-comment-section">
-                                    <textarea id="commentText-{{ $post->id }}" class="form-control" rows="2" placeholder="Add your comment..." required></textarea>
-                                    <button class="btn btn-primary mt-2" id="addCommentBtn-{{ $post->id }}" data-post-id="{{ $post->id }}">Add Comment</button>
-                                </div>
-
-                                <!-- Close Button for the Overlay -->
-                                <button class="btn btn-secondary mt-3 close-comments-btn" data-post-id="{{ $post->id }}">Close</button>
+    <!-- Posts Section -->
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h3>Posts</h3>
+            @if($fixture->posts->count())
+                <ul class="list-group">
+                    @foreach($fixture->posts as $post)
+                        <li class="list-group-item mb-4 bg-light">
+                            <!-- Post Content -->
+                            <div>
+                                <h5 class="fw-bold text-success">
+                                    <a href="{{ route('user.show', $post->user->id) }}" class="text-decoration-none">
+                                        {{ $post->user->name }}
+                                    </a>
+                                </h5>
+                                <p>{{ $post->content }}</p>
+                                @if($post->image)
+                                    <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="img-fluid my-3">
+                                @endif
+                                <p class="text-muted small">Posted {{ $post->created_at->diffForHumans() }}</p>
                             </div>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-        @else
-            <div class="alert alert-warning">
-                No posts found for this fixture.
-            </div>
-        @endif
+
+                            <!-- Edit and Delete Options for the Post -->
+                            @can('edit', $post)
+                            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            @endcan
+
+                            @can('delete', $post)
+                            <form action="{{ route('posts.destroy', ['fixture_id' => $post->fixture_id, 'post' => $post->id]) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                            @endcan
+
+                            <!-- Comments Section -->
+                            <div class="mt-4">
+                                <h6>Comments</h6>
+                                <ul class="list-group">
+                                    @foreach($post->comments as $comment)
+                                        <li class="list-group-item">
+                                            <p class="mb-1">
+                                                <strong>{{ $comment->user->name }}:</strong> {{ $comment->content }}
+                                            </p>
+                                            <p class="text-muted small">Commented {{ $comment->created_at->diffForHumans() }}</p>
+
+                                            <!-- Edit and Delete Options for the Comments -->
+                                            @can('edit', $comment)
+                                                <a href="{{ route('comments.edit', $comment->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                            @endcan
+
+                                            @can('delete', $comment)
+                                                <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                </form>
+                                            @endcan
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+
+                            <!-- Add Comment Form -->
+                            @auth
+                            <form action="{{ route('comments.store', $post->id) }}" method="POST" class="mt-3">
+                                @csrf
+                                <div class="form-group">
+                                    <textarea name="content" class="form-control" rows="2" placeholder="Add a comment..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-sm btn-primary mt-2">Comment</button>
+                            </form>
+                            @endauth
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <p>No posts yet for this fixture. Be the first to post!</p>
+            @endif
+        </div>
     </div>
 </div>
-
-<!-- Include CSRF token in the meta tag for AJAX requests -->
-<meta name="csrf-token" content="{{ csrf_token() }}">
-
-<!-- Inline JavaScript for Comments Overlay -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const fixtureId = '{{ $fixture->id }}';
-        const createPostForm = document.getElementById('createPostForm');
-        const createPostBtn = document.getElementById('createPostBtn');
-
-        // Handle Post Creation via AJAX
-        createPostForm.addEventListener('submit', function (event) {
-            event.preventDefault();
-            const formData = new FormData(createPostForm);
-
-            // Disable the button to prevent multiple submissions
-            createPostBtn.disabled = true;
-            createPostBtn.innerText = 'Submitting...';
-
-            // Send the POST request to the route using the named route
-            fetch("{{ route('posts.store', ['id' => $fixture->id]) }}", {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // If successful, insert the new post into the list
-                    const newPostHtml = `
-                        <li class="list-group-item bg-dark text-white p-4 mb-3 rounded shadow-sm post-item" id="post-${data.post.id}">
-                            <h5 class="fw-bold text-success">${data.user_name}</h5>
-                            <p class="mb-2">${data.post.content}</p>
-                            ${data.image_url ? `<img src="${data.image_url}" alt="Post Image" class="img-fluid my-3" style="max-width: 100%; height: auto;">` : ''}
-                            <p class="post-date mb-3">Posted just now</p>
-                        </li>
-                    `;
-                    document.getElementById('postsList').insertAdjacentHTML('afterbegin', newPostHtml);
-
-                    // Clear the form fields
-                    document.getElementById('postContent').value = '';
-                    document.getElementById('postImage').value = '';
-
-                    // Restore the button state
-                    createPostBtn.disabled = false;
-                    createPostBtn.innerText = 'Create Post';
-                } else {
-                    // Handle error response
-                    alert('Error creating post: ' + (data.message || 'Unknown error'));
-                    createPostBtn.disabled = false;
-                    createPostBtn.innerText = 'Create Post';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while creating the post.');
-                createPostBtn.disabled = false;
-                createPostBtn.innerText = 'Create Post';
-            });
-        });
-
-        // Event listener for each "View Comments" button
-        document.querySelectorAll('.show-comments-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const postId = button.getAttribute('data-post-id');
-                fetchComments(postId);
-            });
-        });
-
-        // Function to fetch comments
-        function fetchComments(postId) {
-            const commentsOverlay = document.getElementById('commentsOverlay-' + postId);
-            const commentsList = document.getElementById('commentsList-' + postId);
-
-            // Show the comments overlay
-            commentsOverlay.classList.remove('d-none');
-            commentsList.innerHTML = 'Loading comments...';
-
-            // Fetch comments from the server
-            fetch(`/posts/${postId}/comments`)
-                .then(response => response.json())
-                .then(data => {
-                    commentsList.innerHTML = ''; // Clear loading message
-                    data.comments.forEach(comment => {
-                        commentsList.innerHTML += `
-                            <div class="card mb-2 bg-dark text-light shadow-sm comment-card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <span class="fw-bold text-success">${comment.user_name || 'Anonymous'}</span>
-                                    <small class="text-muted">Posted ${comment.created_at}</small>
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-text">${comment.content}</p>
-                                </div>
-                            </div>
-                        `;
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching comments:', error);
-                    commentsList.innerHTML = '<p class="text-danger">Failed to load comments. Please try again.</p>';
-                });
-        }
-
-        // Event listener for "Close" button to hide the overlay
-        document.querySelectorAll('.close-comments-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const postId = button.getAttribute('data-post-id');
-                const commentsOverlay = document.getElementById('commentsOverlay-' + postId);
-                commentsOverlay.classList.add('d-none'); // Hide the overlay
-            });
-        });
-
-        // Close the overlay when clicking outside of the content area
-        document.querySelectorAll('.comments-overlay').forEach(overlay => {
-            overlay.addEventListener('click', (event) => {
-                if (event.target === overlay) { // If the click was on the background
-                    overlay.classList.add('d-none');
-                }
-            });
-        });
-
-        // Event listener for "Add Comment" button
-        document.querySelectorAll('.btn[id^="addCommentBtn"]').forEach(button => {
-            button.addEventListener('click', () => {
-                const postId = button.getAttribute('data-post-id');
-                const commentText = document.getElementById('commentText-' + postId).value;
-                addComment(postId, commentText);
-            });
-        });
-
-        // Function to add a comment and update comment count
-        function addComment(postId, content) {
-            if (!content.trim()) {
-                alert('Comment cannot be empty');
-                return;
-            }
-
-            // Send AJAX request to add the comment
-            fetch(`/posts/${postId}/comments`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                },
-                body: JSON.stringify({ content })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Comment added:', data);
-
-                // Dynamically append the new comment to the overlay without reloading
-                const commentsList = document.getElementById('commentsList-' + postId);
-                commentsList.innerHTML += `
-                    <div class="card mb-2 bg-dark text-light shadow-sm comment-card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <span class="fw-bold text-success">${data.user_name || 'Anonymous'}</span>
-                            <small class="text-muted">Posted just now</small>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">${data.content}</p>
-                        </div>
-                    </div>
-                `;
-
-                // Clear the comment input field
-                document.getElementById('commentText-' + postId).value = '';
-
-                // Update the comment count on the button dynamically
-                const commentCountButton = document.querySelector(`.show-comments-btn[data-post-id="${postId}"]`);
-                commentCountButton.textContent = `${data.comment_count} Comments`;
-            })
-            .catch(error => {
-                console.error('Error adding comment:', error);
-            });
-        }
-    });
-</script>
 @endsection

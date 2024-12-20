@@ -8,52 +8,56 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\NotificationController;
 
-Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index')->middleware('auth');
-Route::post('/notifications/read', [NotificationController::class, 'markAsRead'])->name('notifications.read')->middleware('auth');
-
-
-Route::get('/fixtures', [FixtureController::class, 'index'])->name('fixtures.index');
-Route::get('/fixtures/{id}', [FixtureController::class, 'show'])->name('fixtures.show');
-
-
-Route::get('/users/{id}', [UserController::class, 'show'])->name('user.show');
-
-
-Route::get('/posts/{post}/comments', [CommentController::class, 'index'])->name('comments.index');
-Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->middleware('can:edit,post')->name('posts.edit'); 
-    Route::put('/posts/{post}', [PostController::class, 'update'])->middleware('can:edit,post')->name('posts.update'); 
-    
-    Route::post('/fixtures/{id}/posts', [PostController::class,'store'])->name('posts.store');
-    
-    Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->middleware('can:edit,comment')->name('comments.edit');
-    Route::put('/comments/{comment}', [CommentController::class, 'update'])->middleware('can:edit,comment')->name('comments.update');
-    
-    Route::delete('/posts/{post}', [PostController::class, 'destroy'])->middleware('can:delete,post')->name('posts.destroy');
-    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->middleware('can:delete,comment')->name('comments.destroy');
-});
-
+// Public Routes
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/fixtures', [FixtureController::class, 'index'])->name('fixtures.index');
+Route::get('/fixtures/{id}', [FixtureController::class, 'show'])->name('fixtures.show');
+Route::get('/users/{id}', [UserController::class, 'show'])->name('user.show');
 
+// Notifications Routes (Authenticated Only)
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
 });
 
+// Authenticated Routes
+Route::middleware(['auth'])->group(function () {
+    // Dashboard
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->middleware('verified')->name('dashboard');
+    
+    // Profile Management
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
 
+    // Posts Management
+    Route::prefix('posts')->group(function () {
+        Route::post('/fixtures/{fixture_id}/posts', [PostController::class, 'store'])->name('posts.store');
+        Route::get('/fixtures/{fixture_id}/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+        Route::put('/fixtures/{fixture_id}/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+        Route::delete('/fixtures/{fixture_id}/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+    });
+
+    // Comments Management
+    Route::prefix('comments')->group(function () {
+        Route::get('/{comment}/edit', [CommentController::class, 'edit'])->middleware('can:edit,comment')->name('comments.edit');
+        Route::put('/{comment}', [CommentController::class, 'update'])->middleware('can:edit,comment')->name('comments.update');
+        Route::delete('/{comment}', [CommentController::class, 'destroy'])->middleware('can:delete,comment')->name('comments.destroy');
+    });
+
+    // Posts and Comments Association
+    Route::prefix('posts/{post}')->group(function () {
+        Route::get('/comments', [CommentController::class, 'index'])->name('comments.index');
+        Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+    });
+});
+
+// Include Auth Routes
 require __DIR__.'/auth.php';
-
-Route::get('/notifications', function () {
-    return view('notifications.index', [
-        'notifications' => Auth::user()->notifications,
-    ]);
-})->middleware('auth');
