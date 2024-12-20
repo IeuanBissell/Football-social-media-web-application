@@ -22,6 +22,11 @@
                 </li>
             @endforeach
         </ul>
+
+        <!-- Pagination Links -->
+        <div class="pagination-wrapper d-flex justify-content-center mt-4">
+            {{ $fixtures->links('pagination::bootstrap-4') }}
+        </div>
     </div>
 </div>
 @endsection

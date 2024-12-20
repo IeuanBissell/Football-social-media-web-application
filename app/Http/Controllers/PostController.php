@@ -47,7 +47,16 @@ class PostController extends Controller
         // Save the post
         $post->save();
 
-        // Redirect to the fixture's show page
+        if ($request->ajax()) {
+            // Return JSON response for AJAX
+            return response()->json([
+                'success' => true,
+                'post' => $post,
+                'message' => 'Post created successfully!'
+            ]);
+        }
+
+        // Redirect to the fixture's show page if not an AJAX request
         return redirect()->route('fixtures.show', $fixture_id);
     }
 
@@ -92,6 +101,16 @@ class PostController extends Controller
         // Save the updated post
         $post->save();
 
+        if ($request->ajax()) {
+            // Return JSON response for AJAX
+            return response()->json([
+                'success' => true,
+                'post' => $post,
+                'message' => 'Post updated successfully!'
+            ]);
+        }
+
+        // Redirect to the fixture's show page if not an AJAX request
         return redirect()->route('fixtures.show', $fixture_id);
     }
 
@@ -111,6 +130,15 @@ class PostController extends Controller
         // Delete the post
         $post->delete();
 
+        if (request()->ajax()) {
+            // Return JSON response for AJAX
+            return response()->json([
+                'success' => true,
+                'message' => 'Post deleted successfully!'
+            ]);
+        }
+
+        // Redirect to the fixture's show page if not an AJAX request
         return redirect()->route('fixtures.show', $fixture_id);
     }
 

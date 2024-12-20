@@ -32,6 +32,14 @@ class CommentController extends Controller
 
         $notification->save();
 
+        if ($request->ajax()) {
+            return response()->json([
+                'comment' => $comment,
+                'user' => $comment->user,
+                'created_at' => $comment->created_at->diffForHumans(),
+            ]);
+        }
+
         return redirect()->route('fixtures.show', $post->fixture_id);
     }
 
@@ -52,6 +60,13 @@ class CommentController extends Controller
         $comment->content = $request->content;
         $comment->save();
 
+        if ($request->ajax()) {
+            return response()->json([
+                'comment' => $comment,
+                'updated_at' => $comment->updated_at->diffForHumans(),
+            ]);
+        }
+
         return back();
     }
 
@@ -59,6 +74,12 @@ class CommentController extends Controller
     {
         $this->authorize('delete', $comment);
         $comment->delete();
+
+        if (request()->ajax()) {
+            return response()->json([
+                'message' => 'Comment deleted successfully.',
+            ]);
+        }
 
         return back();
     }
