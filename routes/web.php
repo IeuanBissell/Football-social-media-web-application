@@ -17,7 +17,7 @@ Route::get('/fixtures', [FixtureController::class, 'index'])->name('fixtures.ind
 Route::get('/fixtures/{id}', [FixtureController::class, 'show'])->name('fixtures.show');
 Route::get('/users/{id}', [UserController::class, 'show'])->name('user.show');
 
-// Notifications Routes (Authenticated Only)
+// Notifications Routes
 Route::middleware('auth')->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
@@ -39,10 +39,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Posts Management
     Route::prefix('posts')->group(function () {
-        Route::post('/fixtures/{fixture_id}/posts', [PostController::class, 'store'])->name('posts.store');
-        Route::get('/fixtures/{fixture_id}/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
-        Route::put('/fixtures/{fixture_id}/posts/{post}', [PostController::class, 'update'])->name('posts.update');
-        Route::delete('/fixtures/{fixture_id}/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+        Route::post('/fixtures/{fixture}/posts', [PostController::class, 'store'])->name('posts.store');
+        Route::get('/fixtures/{fixture}/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+        Route::put('/fixtures/{fixture}/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+        Route::delete('/fixtures/{fixture}/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
     });
 
     // Comments Management

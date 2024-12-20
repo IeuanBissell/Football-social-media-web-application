@@ -12,55 +12,43 @@ class PostController extends Controller
 {
     public function index()
     {
-        // Get all posts, comments, and users associated with the posts
         $posts = Post::with('user', 'comments')->latest()->get();
         return view('fixtures.show', compact('posts'));
     }
 
-    public function create($fixture_id)
+    public function store(Request $request, Fixture $fixture)
     {
-        // Ensure the fixture exists
-        $fixture = Fixture::findOrFail($fixture_id);
-        return view('posts.create', compact('fixture'));
-    }
-
-    public function store(Request $request, $fixture_id)
-    {
-        // Validate request
+        // Validate the incoming request
         $request->validate([
-            'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'content' => 'required|string|max:500',
+            'image' => 'nullable|image|max:10240',  // Optional image validation
         ]);
 
-        
-        // Create a new post associated with the fixture
+        // Handle image upload if there is one
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('posts', 'public');
+        }
+
         $post = new Post([
             'user_id' => Auth::id(),
             'content' => $request->content,
-            'fixture_id' => $fixture_id,
-            'image' => $request->image,
+            'fixture_id' => $fixture->id,
+            'image' => $imagePath,
         ]);
 
-        // Handle file upload if an image is provided
-        if ($request->hasFile('image')) {
-            $post->image = $request->file('image')->store('images', 'public');
-        }
+        $post->save();
 
-    
-        // Redirect to the fixture's show page if not an AJAX request
-        return redirect()->route('fixtures.show', $fixture_id);
+        // Redirect to the fixture's page
+        return redirect()->route('fixtures.show', $fixture->id);
     }
 
     public function edit($fixture_id, Post $post)
     {
-        // Ensure the post belongs to the authenticated user and authorize
         $this->authorize('update', $post);
-
-        // Ensure fixture ID matches the post's fixture ID
         if ($post->fixture_id != $fixture_id) {
-            abort(404); // If fixture_id mismatch, throw error
+            abort(404);
         }
-
         return view('posts.edit', compact('post', 'fixture_id'));
     }
 

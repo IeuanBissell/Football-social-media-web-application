@@ -12,9 +12,10 @@ class FixtureController extends Controller
      */
     public function index()
     {
-        $fixtures = Fixture::with(['homeTeam', 'awayTeam'])->get();
-        $fixtures = Fixture::paginate(10);
-        return view('fixtures.index', ['fixtures'=> $fixtures]);
+        // Correct pagination query
+        $fixtures = Fixture::with(['homeTeam', 'awayTeam'])->paginate(10);
+        
+        return view('fixtures.index', ['fixtures' => $fixtures]);
     }
 
     /**
@@ -36,11 +37,16 @@ class FixtureController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $fixtureId)
     {
         $fixture = Fixture::with(['homeTeam', 'awayTeam', 'posts.user', 'posts.comments.user'])
-                      ->findOrFail($id);
-        return view('fixtures.show', ['fixture'=> $fixture]);
+                      ->findOrFail($fixtureId);
+
+        \Log::info('Number of posts for fixture ' . $fixtureId . ': ' . $fixture->posts->count());
+    
+        $fixture->posts = $fixture->posts->sortByDesc('created_at'); // Sort posts by created_at in descending order
+
+        return view('fixtures.show', compact('fixture'));
     }
 
     /**
