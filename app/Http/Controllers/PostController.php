@@ -26,7 +26,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', Post::class);
-
+        
         $validated = $request->validate([
             'content' => 'required|string|max:500',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -36,6 +36,8 @@ class PostController extends Controller
         $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('images', 'public');
+        } else {
+            $imagePath = null;
         }
 
         $post = Post::create([
@@ -45,7 +47,13 @@ class PostController extends Controller
             'image' => $imagePath,
         ]);
 
-        return redirect()->back()->with('success', 'Post created successfully.');
+        return response()->json([
+            'success' => true,
+            'user_name' => $post->user->name,
+            'post' => $post,
+            'image_url' => $post->image ? asset('storage/' . $post->image) : null,
+            'created_at' => $post->created_at->diffForHumans(),
+        ]);
     }
 
     /**

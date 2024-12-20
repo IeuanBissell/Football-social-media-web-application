@@ -59,7 +59,6 @@ class CommentController extends Controller
         ]);
 
         
-
         // Ensure the user is authenticated
         if (Auth::check()) {
         // Create the comment using the relationship
