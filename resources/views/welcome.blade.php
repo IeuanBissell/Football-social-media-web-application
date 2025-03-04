@@ -1,14 +1,37 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-5">
-    <!-- Welcome Section -->
-    <div class="welcome-section card shadow-lg p-4 rounded">
-        <h1 class="text-center text-black fw-bold display-4">Welcome to HalfTime</h1>
-        <p class="text-center text-muted lead mb-4">Your go-to football social media hub! Explore fixtures, posts, and more!</p>
-        <div class="text-center">
-            <a href="{{ route('fixtures.index') }}" class="btn btn-lg btn-custom">View Fixtures</a>
+    <!-- Main Content Section -->
+    <div class="split-screen-container">
+
+        <!-- Left Side: Greeting Message -->
+        <div class="left-container">
+            <div class="greeting-container">
+                <h1 id="greeting-message">Welcome to HalfTime</h1>
+                <p>Your go-to football social media hub! Explore fixtures, posts, and more!</p>
+            </div>
+        </div>
+
+        <!-- Right Side: Buttons -->
+        <div class="right-container">
+            <div class="button-container">
+                @if (Route::has('login'))
+                    @auth
+                        <a href="{{ url('/dashboard') }}" class="nav-button btn btn-primary">
+                            Dashboard
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}" class="nav-button btn btn-primary">
+                            Log in
+                        </a>
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}" class="nav-button btn btn-primary">
+                                Register
+                            </a>
+                        @endif
+                    @endauth
+                @endif
+            </div>
         </div>
     </div>
-</div>
 @endsection

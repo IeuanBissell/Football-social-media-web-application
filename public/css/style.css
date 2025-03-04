@@ -1,280 +1,77 @@
-/* Global Styles */
+/* General Styles */
 body {
-    background: linear-gradient(135deg, #32cd32, #87cefa); /* Gradient from green to blue */
-    font-family: 'Arial', sans-serif;
+    background-color: #1a1a1a; /* Dark background */
+    color: #e0e0e0; /* Light text */
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-/* Page Container */
-.page-container {
+/* Split screen layout */
+.split-screen-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    height: 100vh; /* Full viewport height */
+    justify-content: center; /* Horizontally center the content */
+    align-items: center; /* Vertically center the content */
 }
 
-/* Auth Container */
-.auth-container {
-    background-color: white;
-    padding: 32px;
-    max-width: 500px;
-    width: 100%;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 20px;
+/* Left side container for the greeting */
+.left-container {
+    flex: 1; /* Take up half of the screen */
+    display: flex;
+    justify-content: center; /* Horizontally center the greeting */
+    align-items: center; /* Vertically center the greeting */
+    padding: 2rem; /* Add some padding */
 }
 
-/* Page Header */
-.page-header {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #4CAF50;
-    margin-bottom: 24px;
+.greeting-container {
+    text-align: center;
+    max-width: 100%;
 }
 
-/* Form Group */
-.form-group {
-    margin-bottom: 24px;
+#greeting-message {
+    font-size: 4rem;
+    color: #81c784;
+    margin-bottom: 1rem;
 }
 
-label {
-    display: block;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #4CAF50;
+.greeting-container p {
+    font-size: 1.25rem;
+    color: #e0e0e0;
 }
 
-/* Form Input Styles */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="password_confirmation"] {
-    width: 100%;
-    padding: 12px;
-    font-size: 1rem;
-    background-color: #f9f9f9;
-    color: #333;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    transition: all 0.3s ease;
+/* Right side container for the buttons */
+.right-container {
+    flex: 1; /* Take up half of the screen */
+    display: flex;
+    justify-content: center; /* Horizontally center the buttons */
+    align-items: center; /* Vertically center the buttons */
+    padding: 2rem;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-input[type="password_confirmation"]:focus {
-    border-color: #32cd32;
-    background-color: #ffffff;
-    box-shadow: 0 0 5px rgba(50, 205, 50, 0.5);
-    outline: none;
+/* Button container for spacing and alignment */
+.button-container {
+    display: flex;
+    gap: 1rem; /* Add space between the buttons */
+    text-align: center;
 }
 
-/* Submit Button */
-button[type="submit"] {
-    background-color: #32cd32;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 12px;
-    font-size: 1.2rem;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-button[type="submit"]:hover {
-    background-color: #28a745;
-    transform: translateY(-3px);
-}
-
-/* Error Message Box */
-.card.bg-red-700 {
-    background-color: #ff4136;
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    color: white;
-    box-shadow: 0 5px 15px rgba(255, 0, 0, 0.2);
-}
-
-/* Validation Errors */
-.card.bg-red-700 ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.card.bg-red-700 li {
-    font-size: 1rem;
-}
-
-/* General Link Styles */
-a {
-    color: #4CAF50;
+.nav-button {
+    display: inline-block;
+    background-color: #4caf50; /* Green background */
+    border-color: #4caf50;
+    color: #fff; /* White text */
+    padding: 0.75rem 1.5rem;
+    font-size: 1.25rem;
+    border-radius: 25px; /* Rounded corners */
     text-decoration: none;
-    transition: color 0.3s ease;
+    margin: 0.5rem; /* Space between buttons */
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    width: 150px;
 }
 
-a:hover {
-    color: #2e8b57;
-}
-
-/* Footer / Links */
-.mt-6 {
-    margin-top: 1.5rem;
-}
-
-.mt-4 {
-    margin-top: 1rem;
-}
-
-.text-center {
-    text-align: center;
-}
-
-/* Flex Layouts */
-.flex {
-    display: flex;
-}
-
-.justify-center {
-    justify-content: center;
-}
-
-.items-center {
-    align-items: center;
-}
-
-.min-h-screen {
-    min-height: 100vh;
-}
-
-/* Backgrounds */
-.bg-light {
-    background-color: #f4f4f4;
-}
-
-.bg-dark-green {
-    background-color: #006400;
-}
-
-.bg-green-600 {
-    background-color: #32cd32;
-}
-
-/* Hover Effects */
-.bg-green-700:hover {
-    background-color: #28a745;
-}
-
-.text-green {
-    color: #32cd32;
-}
-
-.text-white {
-    color: white;
-}
-
-.text-gold {
-    color: #FFD700;
-}
-
-/* Form Container for Login and Register */
-.form-container {
-    max-width: 500px;
-    margin: auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* Focus States */
-input:focus {
-    outline: none;
-    border-color: #4CAF50;
-}
-
-button:focus {
-    outline: none;
-    box-shadow: 0 0 5px rgba(50, 205, 50, 0.7);
-}
-
-/* Specific Container Styling for Registration and Login Views */
-.auth-container {
-    padding: 32px 40px;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 20px;
-    background-color: #fff;
-}
-
-/* Login View Styles */
-.login-container {
-    background-color: #fff;
-    padding: 40px;
-    max-width: 400px;
-    width: 100%;
-    border-radius: 20px;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
-}
-
-.login-container h2 {
-    font-size: 2rem;
-    text-align: center;
-    color: #4CAF50;
-    margin-bottom: 1.5rem;
-}
-
-.login-container .form-group {
-    margin-bottom: 20px;
-}
-
-.login-container button {
-    width: 100%;
-    padding: 14px;
-    background-color: #4CAF50;
-    border-radius: 20px;
-    color: #fff;
-    font-size: 1.1rem;
-}
-
-.login-container .mt-6 {
-    margin-top: 1.5rem;
-}
-
-.login-container .mt-4 {
-    margin-top: 1rem;
-}
-
-/* Container for Card Elements */
-.card {
-    border-radius: 12px;
-    margin-bottom: 20px;
-    padding: 16px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-}
-
-.card.bg-green-600 {
-    background-color: #32cd32;
-    color: white;
-}
-
-/* Helper Classes for Layouts */
-.text-sm {
-    font-size: 0.875rem;
-}
-
-.text-lg {
-    font-size: 1.125rem;
-}
-
-.font-medium {
-    font-weight: 500;
-}
-
-.font-bold {
-    font-weight: bold;
-}
-
-.m-6 {
-    margin: 1.5rem;
+.nav-button:hover {
+    background-color: #66bb6a; /* Lighter green on hover */
+    border-color: #66bb6a;
+    transform: scale(1.05); /* Slight scale on hover */
 }
