@@ -17,10 +17,6 @@
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-
         <!-- Vite Integration -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
@@ -68,9 +64,9 @@
         </div>
 
         <!-- Footer -->
-        <footer class="bg-dark text-light py-4 mt-5">
+        <footer>
             <div class="container text-center">
-                <p>&copy; 2024 HalfTime. All rights reserved.</p>
+                <p>&copy; 2025 HalfTime. All rights reserved.</p>
                 <p>Ieuan Bissell Creative</p>
             </div>
         </footer>
