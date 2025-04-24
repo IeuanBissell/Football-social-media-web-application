@@ -2,10 +2,7 @@
 
 @section('content')
 <div class="page-container flex justify-center items-center">
-    <div class="auth-container bg-light p-6 shadow rounded-lg">
-        <!-- Page Header -->
-        <h2 class="page-header text-center text-gold">{{ __('Login') }}</h2>
-
+    <div class="auth-container">
         <!-- Validation Errors -->
         @if ($errors->any())
             <div class="card bg-red-700 text-white mb-4">
