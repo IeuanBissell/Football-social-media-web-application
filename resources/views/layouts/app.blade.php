@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,20 +19,11 @@
 
     <body>
         <!-- Main Content -->
-        <div class="page-container">
+        <div class="page-container py-4">
             @yield('content')
         </div>
 
-        <!-- Footer -->
-        <footer>
-            <div class="container text-center">
-                <p>&copy; 2025 HalfTime. All rights reserved.</p>
-                <p>Ieuan Bissell Creative</p>
-            </div>
-        </footer>
-
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
     </body>
 </html>

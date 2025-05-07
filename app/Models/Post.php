@@ -11,9 +11,11 @@ class Post extends Model
 
     protected $fillable = [
         'content',
-        'user_id'
+        'user_id',
+        'fixture_id',
+        'image'
     ];
-    
+
     public function canEdit(User $user)
     {
         if ($user->role->title === 'Admin') {

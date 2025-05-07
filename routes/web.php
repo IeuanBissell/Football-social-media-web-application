@@ -14,7 +14,7 @@ Route::get('/', function () {
 });
 
 Route::get('/fixtures', [FixtureController::class, 'index'])->name('fixtures.index');
-Route::get('/fixtures/{id}', [FixtureController::class, 'show'])->name('fixtures.show');
+Route::get('/fixtures/{fixture}', [FixtureController::class, 'show'])->name('fixtures.show');
 Route::get('/users/{id}', [UserController::class, 'show'])->name('user.show');
 
 // Notifications Routes

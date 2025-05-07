@@ -1,32 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-5">
-    <div class="fixtures-header text-center mb-5">
-        <h1 class="text-black display-4 fw-bold">Upcoming Fixtures</h1>
-        <p class="text-muted lead">Stay updated with the latest match schedules!</p>
+<div class="fixtures-container">
+    <div class="fixtures-header">
+        <h1>Upcoming Fixtures</h1>
+        <p>Stay updated with the latest match schedules!</p>
     </div>
 
-    <!-- Fixture List -->
-    <div class="fixtures-list">
-        <ul class="list-group list-group-flush">
-            @foreach ($fixtures as $fixture)
-                <li class="list-group-item fixture-card shadow-lg mb-3 p-4 rounded">
-                    <a href="{{ route('fixtures.show', $fixture->id) }}" class="text-decoration-none text-dark">
-                        <h5 class="fw-bold text-success">
-                            {{ $fixture->homeTeam->name }} vs {{ $fixture->awayTeam->name }}
-                        </h5>
-                    </a>
-                    <p class="text-muted small">Match Date: {{ $fixture->match_date }}</p>
-                    <span class="badge bg-success">{{ $fixture->location }}</span>
-                </li>
-            @endforeach
-        </ul>
+    <!-- Fixture Cards -->
+    <div class="fixtures-grid">
+        @foreach ($fixtures as $fixture)
+            <a href="{{ route('fixtures.show', $fixture->id) }}" class="fixture-card">
+                <div class="teams">
+                    <span class="team home">{{ $fixture->homeTeam->name }}</span>
+                    <span class="vs">VS</span>
+                    <span class="team away">{{ $fixture->awayTeam->name }}</span>
+                </div>
+                <div class="fixture-details">
+                    <div class="detail">
+                        <span class="icon">📅</span>
+                        <span>{{ $fixture->match_date }}</span>
+                    </div>
+                    <div class="detail">
+                        <span class="icon">📍</span>
+                        <span>{{ $fixture->location }}</span>
+                    </div>
+                </div>
+            </a>
+        @endforeach
+    </div>
 
-        <!-- Pagination Links -->
-        <div class="pagination-wrapper d-flex justify-content-center mt-4">
-            {{ $fixtures->links('pagination::bootstrap-4') }}
-        </div>
+    <!-- Pagination Links -->
+    <div class="pagination-container">
+        {{ $fixtures->links('pagination::bootstrap-4') }}
     </div>
 </div>
 @endsection

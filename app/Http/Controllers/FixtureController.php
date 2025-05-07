@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Fixture;
+use App\Models\Post;
 
 class FixtureController extends Controller
 {
@@ -14,7 +15,7 @@ class FixtureController extends Controller
     {
         // Correct pagination query
         $fixtures = Fixture::with(['homeTeam', 'awayTeam'])->paginate(10);
-        
+
         return view('fixtures.index', ['fixtures' => $fixtures]);
     }
 
@@ -37,16 +38,18 @@ class FixtureController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $fixtureId)
+    public function show(Fixture $fixture)
     {
-        $fixture = Fixture::with(['homeTeam', 'awayTeam', 'posts.user', 'posts.comments.user'])
-                      ->findOrFail($fixtureId);
+        $fixture-> load(['homeTeam', 'awayTeam']);
 
-        \Log::info('Number of posts for fixture ' . $fixtureId . ': ' . $fixture->posts->count());
-    
-        $fixture->posts = $fixture->posts->sortByDesc('created_at'); // Sort posts by created_at in descending order
+        $posts = Post::where('fixture_id', $fixture->id)
+                ->with(['user', 'comments.user'])
+                ->orderBy('created_at', 'desc')
+                ->get();
 
-        return view('fixtures.show', compact('fixture'));
+        \Log::info('Number of posts for fixture ' . $fixture->id . ': ' . $fixture->posts->count());
+
+        return view('fixtures.show', compact('fixture', 'posts'));
     }
 
     /**

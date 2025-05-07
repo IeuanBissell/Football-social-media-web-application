@@ -2,6 +2,11 @@
 
 @section('content')
 <div class="container">
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <!-- Fixture Details Section -->
     <div class="row mb-4">
         <div class="col-md-12 text-center">
@@ -25,7 +30,7 @@
                     <input type="file" name="image" id="image" class="form-control" accept="image/*">
                 </div>
                 <button type="submit" class="btn btn-custom">Post</button>
-            </form> 
+            </form>
         </div>
     </div>
 
@@ -34,9 +39,9 @@
         <div class="col-md-12">
             <h3 class="text-dark">Posts</h3>
             <div id="posts-list">
-                @if($fixture->posts->count())
+                @if($posts->count())
                     <div class="list-group">
-                        @foreach($fixture->posts as $post)
+                        @foreach($posts as $post)
                             <div class="list-group-item mb-4 bg-light border-0 shadow-sm">
                                 <!-- Post Content -->
                                 <div class="d-flex justify-content-between">
@@ -114,49 +119,4 @@
     </div>
 </div>
 
-@endsection
-
-@section('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-$(document).ready(function() {
-    $('#postForm').submit(function(e) {
-        e.preventDefault();
-
-        var formData = new FormData(this);
-
-        $.ajax({
-            url: $(this).attr('action'),
-            method: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(response) {
-                // Append new post to the post list without refreshing
-                $('#posts-list').prepend(`
-                    <div class="list-group-item mb-4 bg-light border-0 shadow-sm">
-                        <div class="d-flex justify-content-between">
-                            <h5 class="fw-bold text-success">
-                                <a href="/user/${response.user_id}" class="text-decoration-none text-dark">
-                                    ${response.user_name}
-                                </a>
-                            </h5>
-                            <span class="badge bg-secondary text-light">${response.created_at}</span>
-                        </div>
-                        <p>${response.content}</p>
-                        ${response.image ? `<img src="${response.image}" class="img-fluid my-3 rounded">` : ''}
-                    </div>
-                `);
-
-                // Optionally clear the form inputs after submission
-                $('#postForm')[0].reset();
-            },
-            error: function(xhr) {
-                alert('Error occurred while posting.');
-            }
-        });
-    });
-});
-</script>
 @endsection
