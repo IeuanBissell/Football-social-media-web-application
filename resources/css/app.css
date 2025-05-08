@@ -104,12 +104,24 @@
     position: relative;
   }
 
+  .feature-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
   /* Feature card */
   .feature-card {
-    composes: card-base;
     padding: 2rem;
     text-align: center;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     border-top: 3px solid var(--primary);
+    position: relative;
+    height: 100%;
   }
 
   .feature-card:hover {
@@ -938,4 +950,99 @@
 
   .space-y-4 > * + * {
     margin-top: 1rem;
+  }
+
+  /* Fixture Details Page */
+.fixture-meta {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1rem;
+    color: var(--text-light);
+  }
+
+  .fixture-meta p {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Card author */
+  .card-author {
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .card-author:hover {
+    color: var(--primary);
+  }
+
+  /* Comments section */
+  .comments-section {
+    margin-top: 2rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+  }
+
+  .comment-item {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    background-color: rgba(0, 0, 0, 0.02);
+    margin-bottom: 1rem;
+    border-radius: 6px;
+  }
+
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .comment-author {
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .comment-author:hover {
+    color: var(--primary);
+  }
+
+  .comment-form {
+    margin-top: 1.5rem;
+  }
+
+/* Improved Action buttons container */
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    align-items: center;
+  }
+
+  .action-buttons .btn-sm {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .action-buttons form {
+    display: inline-block;
+    margin: 0;
+  }
+
+  .action-buttons a,
+  .action-buttons button {
+    margin: 0;
+  }
+
+  /* Fix for inline form buttons */
+  .d-inline {
+    display: inline-block !important;
+  }
+
+  /* Fix for nested forms */
+  form .d-inline {
+    display: inline-block !important;
   }
