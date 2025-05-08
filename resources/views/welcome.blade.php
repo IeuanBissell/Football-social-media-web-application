@@ -1,39 +1,47 @@
 @extends('layouts.app')
 
 @section('content')
-    <!-- Main Content Section -->
-    <div class="welcome-container">
+<!-- Main Content Section -->
+<div class="welcome-container">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1>Welcome to HalfTime</h1>
+        <p>Your go-to football social hub. Connect, discuss, and celebrate the beautiful game.</p>
+    </div>
 
-        <!-- Greeting Message -->
-        <div class="greeting-container mb-8">
-            <h1 id="greeting-message" class="text-4xl text-cream font-bold mb-4">Welcome to HalfTime</h1>
-            <p class="text-xl text-cream">Your go-to football social media hub! Explore fixtures, posts, and more!</p>
+    <!-- Feature Highlights -->
+    <div class="feature-grid">
+        <div class="feature-card">
+            <i class="fas fa-futbol" aria-hidden="true"></i>
+            <h2>Match Fixtures</h2>
+            <p>Stay updated with upcoming matches and results</p>
         </div>
 
-        <!-- Buttons Container -->
-        <div class="button-container mt-8">
-            @if (Route::has('login'))
-                @auth
-                    <a href="{{ url('/dashboard') }}" class="nav-button btn btn-primary">
-                        Dashboard
-                    </a>
-                    <form method="POST" action="{{ route('logout') }}" class="mt-4">
-                        @csrf
-                        <button class="nav-button btn btn-primary">
-                            Log Out
-                        </button>
-                    </form>
-                @else
-                    <a href="{{ route('login') }}" class="nav-button btn btn-primary">
-                        Log in
-                    </a>
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="nav-button btn btn-primary">
-                            Register
-                        </a>
-                    @endif
-                @endauth
-            @endif
+        <div class="feature-card">
+            <i class="fas fa-comments" aria-hidden="true"></i>
+            <h2>Fan Discussions</h2>
+            <p>Share your thoughts and engage with other fans</p>
+        </div>
+
+        <div class="feature-card">
+            <i class="fas fa-chart-line" aria-hidden="true"></i>
+            <h2>Live Updates</h2>
+            <p>Real-time match stats and commentary</p>
         </div>
     </div>
+
+    <!-- Call to Action -->
+    <div class="cta-section">
+        @if (Route::has('login'))
+            @auth
+                <a href="{{ url('/dashboard') }}" class="primary-button">Go to Dashboard</a>
+            @else
+                <a href="{{ route('login') }}" class="primary-button">Log in</a>
+                @if (Route::has('register'))
+                    <a href="{{ route('register') }}" class="secondary-button">Register</a>
+                @endif
+            @endauth
+        @endif
+    </div>
+</div>
 @endsection
