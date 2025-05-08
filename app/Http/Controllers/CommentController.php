@@ -22,16 +22,6 @@ class CommentController extends Controller
             'content' => $request->content,
         ]);
 
-        // Create a notification for the post author
-        $notification = new Notification([
-            'user_id' => $post->user_id,  // Assuming you want to notify the post author
-            'post_id' => $post->id,
-            'comment_id' => $comment->id,
-            'message' => 'New comment on your post.',
-        ]);
-
-        $notification->save();
-
         if ($request->ajax()) {
             return response()->json([
                 'comment' => $comment,

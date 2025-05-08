@@ -24,10 +24,6 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard');
     })->middleware('verified')->name('dashboard');
 
-    // Notifications
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-    Route::post('/notifications/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
-
     // Profile Management
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -58,6 +54,18 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/{comment}', [CommentController::class, 'update'])->name('comments.update');
         Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
     });
+
+    // Notification routes
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::patch('/{id}/read', [NotificationController::class, 'markAsRead'])->name('read');
+        Route::patch('/read-all', [NotificationController::class, 'markAllAsRead'])->name('read.all');
+        Route::delete('/{id}', [NotificationController::class, 'destroy'])->name('destroy');
+        Route::delete('/delete-all', [NotificationController::class, 'destroyAll'])->name('destroy.all');
+    });
+
+    // API route for getting unread notification count (for AJAX requests)
+    Route::get('/api/notifications/count', [NotificationController::class, 'getUnreadCount'])->name('notifications.count');
 });
 
 // Include Auth Routes
