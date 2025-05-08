@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
-use App\Http\Livewire\UserSearch;
+use App\Livewire\UserSearch;
 
 class AppServiceProvider extends ServiceProvider
 {

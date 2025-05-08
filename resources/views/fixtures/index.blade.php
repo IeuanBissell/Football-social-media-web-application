@@ -9,7 +9,7 @@
 
     <!-- Fixture Cards -->
     <div class="fixtures-grid">
-        @foreach ($fixtures as $fixture)
+        @forelse ($fixtures as $fixture)
             <a href="{{ route('fixtures.show', $fixture->id) }}" class="fixture-card">
                 <div class="teams">
                     <span class="team home">{{ $fixture->homeTeam->name }}</span>
@@ -18,21 +18,25 @@
                 </div>
                 <div class="fixture-details">
                     <div class="detail">
-                        <span class="icon">📅</span>
+                        <span class="icon" aria-hidden="true">📅</span>
                         <span>{{ $fixture->match_date }}</span>
                     </div>
                     <div class="detail">
-                        <span class="icon">📍</span>
+                        <span class="icon" aria-hidden="true">📍</span>
                         <span>{{ $fixture->location }}</span>
                     </div>
                 </div>
             </a>
-        @endforeach
+        @empty
+            <div class="no-fixtures">
+                <p>No upcoming fixtures at the moment. Check back later!</p>
+            </div>
+        @endforelse
     </div>
 
     <!-- Pagination Links -->
     <div class="pagination-container">
-        {{ $fixtures->links('pagination::bootstrap-4') }}
+        {{ $fixtures->links() }}
     </div>
 </div>
 @endsection

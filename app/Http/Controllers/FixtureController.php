@@ -14,7 +14,7 @@ class FixtureController extends Controller
     public function index()
     {
         // Correct pagination query
-        $fixtures = Fixture::with(['homeTeam', 'awayTeam'])->paginate(10);
+        $fixtures = Fixture::with(['homeTeam', 'awayTeam'])->paginate(12);
 
         return view('fixtures.index', ['fixtures' => $fixtures]);
     }

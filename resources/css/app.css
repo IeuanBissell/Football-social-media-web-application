@@ -506,3 +506,264 @@
   .btn-link:hover {
     color: var(--primary-light);
   }
+
+  /* Fixtures page styles */
+.fixtures-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  .fixtures-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem 1rem;
+    border-bottom: 2px solid var(--accent);
+  }
+
+  .fixtures-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary);
+    position: relative;
+    display: inline-block;
+  }
+
+  .fixtures-header h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 10%;
+    width: 80%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+
+  .fixtures-header p {
+    font-size: 1.25rem;
+    max-width: 700px;
+    margin: 0 auto;
+    color: var(--text-light);
+  }
+
+  .fixtures-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .fixture-card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    border-top: 3px solid var(--primary);
+    position: relative;
+  }
+
+  .fixture-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    border-top: 2px solid var(--accent);
+    border-right: 2px solid var(--accent);
+    opacity: 0.7;
+  }
+
+  .fixture-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border-bottom: 2px solid var(--primary);
+    border-left: 2px solid var(--primary);
+    opacity: 0.7;
+  }
+
+  .fixture-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .teams {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .team {
+    font-size: 1.1rem;
+    width: 40%;
+  }
+
+  .team.home {
+    text-align: left;
+  }
+
+  .team.away {
+    text-align: right;
+  }
+
+  .vs {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1.2rem;
+  }
+
+  .fixture-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .detail {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-light);
+  }
+
+  .icon {
+    font-size: 1.2rem;
+  }
+
+  .pagination-container {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Pagination styling */
+  .pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .pagination li {
+    margin: 0 0.25rem;
+  }
+
+  .pagination li a,
+  .pagination li span {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    text-decoration: none;
+    background-color: var(--card-bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    transition: all 0.2s ease;
+  }
+
+  .pagination li.active span {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+
+  .pagination li a:hover {
+    background-color: rgba(13, 138, 78, 0.1);
+    color: var(--primary);
+  }
+
+  /* Auth Layout Styles */
+.auth-layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background-color: var(--background);
+    background-image:
+      linear-gradient(to bottom right, rgba(13, 138, 78, 0.05), transparent),
+      linear-gradient(to top left, rgba(212, 175, 55, 0.05), transparent);
+  }
+
+  .auth-brand {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .auth-brand a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--primary);
+  }
+
+  .brand-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+  }
+
+  .brand-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
+
+  .auth-container {
+    width: 100%;
+    max-width: 450px;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+    border-top: 3px solid var(--primary);
+  }
+
+  .auth-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    border-top: 2px solid var(--accent);
+    border-right: 2px solid var(--accent);
+    opacity: 0.7;
+  }
+
+  .auth-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border-bottom: 2px solid var(--primary);
+    border-left: 2px solid var(--primary);
+    opacity: 0.7;
+  }
+
+  .auth-footer {
+    margin-top: 2rem;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.875rem;
+  }
