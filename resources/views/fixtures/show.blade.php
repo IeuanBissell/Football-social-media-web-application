@@ -7,6 +7,13 @@
             {{ session('success') }}
         </div>
     @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <!-- Fixture Details Section -->
     <div class="row mb-4">
         <div class="col-md-12 text-center">
@@ -62,17 +69,15 @@
                                 @endif
 
                                 <!-- Edit and Delete Options for the Post -->
-                                @if(Auth::id() == $post->user_id)
-                                    <a href="{{ route('posts.edit', ['fixture' => $post->fixture_id, 'post' => $post->id]) }}" class="btn btn-sm btn-warning">Edit</a>
-                                @endif
+                                @if(Auth::check() && (Auth::id() == $post->user_id || Auth::user()->hasRole('admin')))
+                                    <a href="{{ route('posts.edit', ['fixture' => $fixture->id, 'post' => $post->id]) }}" class="btn btn-sm btn-warning">Edit</a>
 
-                                @can('delete', $post)
-                                    <form action="{{ route('posts.destroy', ['fixture' => $post->fixture_id, 'post' => $post->id]) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('posts.destroy', ['fixture' => $fixture->id, 'post' => $post->id]) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                     </form>
-                                @endcan
+                                @endif
 
                                 <!-- Comments Section -->
                                 <div class="mt-4">
@@ -90,17 +95,15 @@
                                                 <p class="text-muted small">Commented {{ $comment->created_at->diffForHumans() }}</p>
 
                                                 <!-- Edit and Delete Options for the Comment -->
-                                                @if(Auth::id() == $comment->user_id)
+                                                @if(Auth::check() && (Auth::id() == $comment->user_id || Auth::user()->hasRole('admin')))
                                                     <a href="{{ route('comments.edit', $comment->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                                @endif
 
-                                                @can('delete', $comment)
                                                     <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                                     </form>
-                                                @endcan
+                                                @endif
                                             </div>
                                         @endforeach
                                     </div>
@@ -127,4 +130,30 @@
     </div>
 </div>
 
+@endsection
+
+@section('scripts')
+<script>
+    function previewImage(input) {
+        var preview = document.getElementById('preview-img');
+        var previewContainer = document.getElementById('image-preview');
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                previewContainer.style.display = 'block';
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function removeImage() {
+        document.getElementById('image').value = '';
+        document.getElementById('image-preview').style.display = 'none';
+        document.getElementById('preview-img').src = '';
+    }
+</script>
 @endsection

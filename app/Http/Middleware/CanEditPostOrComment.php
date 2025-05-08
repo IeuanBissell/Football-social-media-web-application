@@ -16,12 +16,23 @@ class CanEditPostOrComment
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $item = $request->route('item'); // Fetch the post or comment from route parameter
+         // Check for post parameter
+         $post = $request->route('post');
+
+         // Check for comment parameter
+         $comment = $request->route('comment');
+
+         $item = $post ?? $comment;
+
+         if (!$item || !Auth::check()) {
+            return redirect()->route('home')->with('error', 'Item not found or you are not logged in.');
+        }
 
         // Check if the user is the owner or has an admin role
-        if ($item->user_id !== Auth::id() && !Auth::user()->hasRole('admin')) {
+        if ($item->user_id !== Auth::id() && !Auth::user()->hasRole('Admin')) {
             return redirect()->route('home')->with('error', 'You are not authorized to edit this item.');
         }
+
         return $next($request);
     }
 }

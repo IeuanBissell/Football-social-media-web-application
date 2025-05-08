@@ -76,7 +76,7 @@ class User extends Authenticatable
 
     public function hasRole($roleName)
     {
-        return $this->role === $roleName;
+        return $this->role && strtolower($this->role->title) === strtolower($roleName);
     }
 
     public function isAdmin()
