@@ -40,9 +40,9 @@ Route::middleware(['auth'])->group(function () {
     // Posts Management
     Route::prefix('posts')->group(function () {
         Route::post('/fixtures/{fixture}/posts', [PostController::class, 'store'])->name('posts.store');
-        Route::get('/fixtures/{fixture_id}/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
-        Route::put('/fixtures/{fixture_id}/posts/{post}', [PostController::class, 'update'])->name('posts.update');
-        Route::delete('/fixtures/{fixture_id}/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+        Route::get('/fixtures/{fixture}/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+        Route::put('/fixtures/{fixture}/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+        Route::delete('/fixtures/{fixture}/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
     });
 
     // Comments Management

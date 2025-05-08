@@ -27,7 +27,11 @@
                 </div>
                 <div class="form-group mb-3">
                     <label for="image" class="text-muted">Upload Image (optional)</label>
-                    <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                    <input type="file" name="image" id="image" class="form-control" accept="image/*" onchange="previewImage(this)">
+                    <div id="image-preview" class="mt-2" style="display: none;">
+                        <img src="" id="preview-img" class="img-fluid rounded" style="max-height: 200px;">
+                        <button type="button" class="btn btn-sm btn-danger mt-1" onclick="removeImage()">Remove Image</button>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-custom">Post</button>
             </form>
@@ -58,12 +62,12 @@
                                 @endif
 
                                 <!-- Edit and Delete Options for the Post -->
-                                @can('edit', $post)
-                                    <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                @endcan
+                                @if(Auth::id() == $post->user_id)
+                                    <a href="{{ route('posts.edit', ['fixture' => $post->fixture_id, 'post' => $post->id]) }}" class="btn btn-sm btn-warning">Edit</a>
+                                @endif
 
                                 @can('delete', $post)
-                                    <form action="{{ route('posts.destroy', ['fixture_id' => $post->fixture_id, 'post' => $post->id]) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('posts.destroy', ['fixture' => $post->fixture_id, 'post' => $post->id]) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
@@ -77,14 +81,18 @@
                                         @foreach($post->comments as $comment)
                                             <div class="list-group-item bg-light">
                                                 <p class="mb-1">
-                                                    <strong>{{ $comment->user->name }}:</strong> {{ $comment->content }}
+                                                    <strong>
+                                                        <a href="{{ route('user.show', $comment->user->id) }}" class="text-decoration-none text-dark">
+                                                            {{ $comment->user->name }}
+                                                        </a>
+                                                    </strong> {{ $comment->content }}
                                                 </p>
                                                 <p class="text-muted small">Commented {{ $comment->created_at->diffForHumans() }}</p>
 
                                                 <!-- Edit and Delete Options for the Comment -->
-                                                @can('edit', $comment)
+                                                @if(Auth::id() == $comment->user_id)
                                                     <a href="{{ route('comments.edit', $comment->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                                @endcan
+                                                @endif
 
                                                 @can('delete', $comment)
                                                     <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" class="d-inline">

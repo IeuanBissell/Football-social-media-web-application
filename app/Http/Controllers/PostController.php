@@ -51,10 +51,8 @@ class PostController extends Controller
             ]);
         }
 
-        // Flash success message
         session()->flash('success', 'Post created successfully!');
 
-        // Always redirect back to the fixture show page
         return redirect()->route('fixtures.show', $fixture);
     }
 

@@ -16,10 +16,13 @@ class UserTableSeeder extends Seeder
     public function run(): void
     {
 
+        $adminRole = Role::where('title', 'admin')->first();
+
         $u = new User;
         $u->name = 'Ieuan';
         $u->email = 'ieuan@email.com';
         $u->password = bcrypt('password');
+        $u->role_id = $adminRole->id;
         $u->save();
 
         User::factory()

@@ -20,7 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id'
+        'role_id',
     ];
 
     /**
@@ -63,7 +63,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
-    
+
     public function teams()
     {
         return $this->belongsToMany(Team::class);
@@ -74,8 +74,13 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function hasRole($role)
-{
-    return $this->roles->contains('name', $role);
-}
+    public function hasRole($roleName)
+    {
+        return $this->role === $roleName;
+    }
+
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
+    }
 }
