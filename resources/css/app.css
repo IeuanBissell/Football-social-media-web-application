@@ -2218,3 +2218,56 @@
     background-color: var(--danger);
     color: white;
   }
+  /* Add these styles to your CSS for the Recent Activity section */
+
+.recent-activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .activity-item {
+    background-color: white;
+    border-radius: var(--border-radius-md);
+    padding: 1rem;
+    border-left: 3px solid var(--green-primary);
+    transition: var(--transition-smooth);
+    margin-bottom: 0.75rem;
+  }
+
+  .activity-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .activity-icon {
+    width: 34px;
+    height: 34px;
+    background: linear-gradient(to bottom right, var(--cream), white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .activity-content {
+    flex: 1;
+  }
+
+  .activity-text {
+    color: var(--dark-text);
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+  }
+
+  /* Alternate colors for post vs comment */
+  .activity-item:nth-child(odd) {
+    border-left-color: var(--green-primary);
+  }
+
+  .activity-item:nth-child(even) {
+    border-left-color: var(--gold);
+  }
