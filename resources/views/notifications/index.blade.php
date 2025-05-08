@@ -54,13 +54,13 @@
 
                                         @if(isset($notification->data['message']))
                                             <p class="mb-1">{{ $notification->data['message'] }}</p>
+                                        @elseif(str_contains($notification->type, 'NewPostNotification') && isset($notification->data['title']))
+                                            <p class="mb-1">
+                                                {{ $notification->data['author'] ?? 'Someone' }} posted {{ $notification->data['title'] ? '"' . $notification->data['title'] . '"' : 'a new post' }}
+                                            </p>
                                         @else
                                             <p class="mb-1">
-                                                @if($notification->type === 'App\\Notifications\\NewPostNotification')
-                                                    New post "{{ $notification->data['title'] }}" was published by {{ $notification->data['author'] }}
-                                                @else
-                                                    {{ __('You have a new notification') }}
-                                                @endif
+                                                {{ __('You have a new notification') }}
                                             </p>
                                         @endif
 
@@ -68,7 +68,7 @@
                                     </div>
                                     <div class="d-flex align-items-center">
                                         @if(isset($notification->data['post_id']))
-                                            <a href="{{ url('/posts/' . $notification->data['post_id']) }}" class="btn btn-sm btn-primary me-2">
+                                            <a href="{{ isset($notification->data['fixture_id']) ? url('/fixtures/' . $notification->data['fixture_id']) : url('/posts/' . $notification->data['post_id']) }}" class="btn btn-sm btn-primary me-2">
                                                 {{ __('View') }}
                                             </a>
                                         @endif

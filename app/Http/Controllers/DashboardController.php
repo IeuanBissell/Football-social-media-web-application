@@ -15,18 +15,48 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        // Get the authenticated user
-        $user = Auth::user();
+        try {
+            // Get the authenticated user
+            $user = Auth::user();
 
-        // Retrieve user's recent posts (if you have a Post model)
-        $posts = Post::where('user_id', $user->id)
-                    ->latest()
-                    ->take(5)
-                    ->get();
+            // Initialize empty arrays for safety
+            $posts = collect([]);
+            $notifications = collect([]);
 
-        // The notifications will be accessed directly from the authenticated user
-        // in the view using Auth::user()->notifications
+            // Retrieve user's recent posts (limit to 5)
+            // Wrap in try-catch to handle any potential errors
+            try {
+                $posts = Post::where('user_id', $user->id)
+                            ->latest()
+                            ->take(5)
+                            ->get();
+            } catch (\Exception $e) {
+                // Log the error but don't crash
+                \Log::error('Error fetching posts: ' . $e->getMessage());
+            }
 
-        return view('dashboard', compact('posts'));
+            // Get recent notifications (limit to 5)
+            try {
+                $notifications = $user->notifications()
+                                    ->latest()
+                                    ->take(5)
+                                    ->get();
+            } catch (\Exception $e) {
+                // Log the error but don't crash
+                \Log::error('Error fetching notifications: ' . $e->getMessage());
+            }
+
+            return view('dashboard', compact('posts', 'notifications'));
+
+        } catch (\Exception $e) {
+            // Log any unexpected errors
+            \Log::error('Dashboard error: ' . $e->getMessage());
+
+            // Return view with empty collections to prevent errors
+            return view('dashboard', [
+                'posts' => collect([]),
+                'notifications' => collect([])
+            ]);
+        }
     }
 }
