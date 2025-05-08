@@ -5,7 +5,6 @@
     <!-- Welcome Section -->
     <div class="welcome-section mb-5 text-center">
         <h1 class="display-4">Welcome Back, {{ Auth::user()->name }}!</h1>
-        <p class="lead text-muted">This is your hub for all things HalfTime.</p>
     </div>
 
     <!-- Dashboard Links -->
