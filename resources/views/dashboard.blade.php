@@ -61,8 +61,8 @@
     </div>
 
     <div class="row dashboard">
-        <!-- Notifications Section -->
-        <div class="col-md-6 mb-4">
+        <!-- Notifications Section - Full Width -->
+        <div class="col-md-12 mb-4">
             <div class="card shadow-lg">
                 <div class="card-body">
                     <h5 class="card-title text-success">
@@ -76,32 +76,58 @@
                         @endif
                     </h5>
                     <div class="notification-list">
-                        @if(isset($notifications) && count($notifications) > 0)
-                            @foreach($notifications as $notification)
+                        @if(Auth::user()->notifications->count() > 0)
+                            @foreach(Auth::user()->notifications as $notification)
                                 <div class="notification-item {{ $notification->read_at ? 'read' : 'unread' }}">
                                     <div class="notification-icon">
-                                        @if(str_contains($notification->type, 'PostInteractionNotification'))
-                                            @if(isset($notification->data['type']) && $notification->data['type'] == 'like')
-                                                <i class="fas fa-heart"></i>
-                                            @elseif(isset($notification->data['type']) && $notification->data['type'] == 'comment')
-                                                <i class="fas fa-comment"></i>
-                                            @elseif(isset($notification->data['type']) && $notification->data['type'] == 'share')
-                                                <i class="fas fa-share-alt"></i>
+                                        <!-- Debug: Display notification type -->
+                                        @php
+                                            $type = class_basename($notification->type);
+                                            $notificationType = '';
+
+                                            if (str_contains($notification->type, 'PostInteraction')) {
+                                                $notificationType = 'interaction';
+                                                $interactionType = $notification->data['type'] ?? 'unknown';
+                                            } elseif (str_contains($notification->type, 'NewPost')) {
+                                                $notificationType = 'newpost';
+                                            } else {
+                                                $notificationType = 'general';
+                                            }
+                                        @endphp
+
+                                        @if($notificationType == 'interaction')
+                                            @if($interactionType == 'like')
+                                                <i class="fas fa-heart text-danger"></i>
+                                            @elseif($interactionType == 'comment')
+                                                <i class="fas fa-comment text-primary"></i>
+                                            @elseif($interactionType == 'share')
+                                                <i class="fas fa-share-alt text-success"></i>
                                             @else
-                                                <i class="fas fa-bell"></i>
+                                                <i class="fas fa-bell text-warning"></i>
                                             @endif
-                                        @elseif(str_contains($notification->type, 'NewPostNotification'))
-                                            <i class="fas fa-file-alt"></i>
+                                        @elseif($notificationType == 'newpost')
+                                            <i class="fas fa-file-alt text-success"></i>
                                         @else
-                                            <i class="fas fa-bell"></i>
+                                            <i class="fas fa-bell text-secondary"></i>
                                         @endif
                                     </div>
                                     <div class="notification-content">
                                         <p>
+                                            <!-- Debug: Display notification data -->
                                             @if(isset($notification->data['message']))
                                                 {{ $notification->data['message'] }}
-                                            @elseif(str_contains($notification->type, 'NewPostNotification') && isset($notification->data['title']))
-                                                {{ $notification->data['author'] ?? 'Someone' }} posted {{ $notification->data['title'] ? '"' . $notification->data['title'] . '"' : 'a new post' }}
+                                            @elseif($notificationType == 'newpost')
+                                                {{ $notification->data['author'] ?? 'Someone' }} posted {{ isset($notification->data['title']) && !empty($notification->data['title']) ? '"' . $notification->data['title'] . '"' : 'a new post' }}
+                                            @elseif($notificationType == 'interaction')
+                                                @if($interactionType == 'like')
+                                                    {{ $notification->data['user_name'] ?? 'Someone' }} liked your post
+                                                @elseif($interactionType == 'comment')
+                                                    {{ $notification->data['user_name'] ?? 'Someone' }} commented on your post
+                                                @elseif($interactionType == 'share')
+                                                    {{ $notification->data['user_name'] ?? 'Someone' }} shared your post
+                                                @else
+                                                    {{ $notification->data['user_name'] ?? 'Someone' }} interacted with your post
+                                                @endif
                                             @else
                                                 You have a new notification
                                             @endif
@@ -110,13 +136,13 @@
                                             <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
 
                                             <div class="d-flex align-items-center">
-                                                @if(str_contains($notification->type, 'NewPostNotification') && isset($notification->data['post_id']))
-                                                    <a href="{{ isset($notification->data['fixture_id']) ? route('fixtures.show', $notification->data['fixture_id']) : '#' }}" class="btn btn-sm btn-primary me-2">
-                                                        View Post
-                                                    </a>
-                                                @elseif(str_contains($notification->type, 'PostInteractionNotification') && isset($notification->data['post_id']))
-                                                    <a href="{{ isset($notification->data['fixture_id']) ? route('fixtures.show', $notification->data['fixture_id']) : '#' }}" class="btn btn-sm btn-primary me-2">
+                                                @if(isset($notification->data['fixture_id']))
+                                                    <a href="{{ route('fixtures.show', $notification->data['fixture_id']) }}" class="btn btn-sm btn-primary me-2">
                                                         View
+                                                    </a>
+                                                @elseif(isset($notification->data['post_id']))
+                                                    <a href="{{ route('fixtures.show', $notification->data['post_id']) }}" class="btn btn-sm btn-primary me-2">
+                                                        View Post
                                                     </a>
                                                 @endif
 
@@ -147,112 +173,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Recent Activity Section (Replaces Recent Posts) -->
-        <div class="col-md-6 mb-4">
-            <div class="card shadow-lg">
-                <div class="card-body">
-                    <h5 class="card-title text-success">
-                        <i class="fas fa-comment-alt me-2"></i> Recent Activity
-                    </h5>
-                    <div class="recent-activity-list">
-                        @if(isset($recentActivity) && count($recentActivity) > 0)
-                            @foreach($recentActivity as $activity)
-                                <div class="activity-item">
-                                    <div class="d-flex align-items-start">
-                                        <div class="activity-icon me-3">
-                                            @if($activity['type'] == 'post')
-                                                <i class="fas fa-file-alt text-success"></i>
-                                            @elseif($activity['type'] == 'comment')
-                                                <i class="fas fa-comment text-primary"></i>
-                                            @endif
-                                        </div>
-                                        <div class="activity-content flex-grow-1">
-                                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                                <span class="fw-bold">{{ $activity['user_name'] }}</span>
-                                                <small class="text-muted">{{ \Carbon\Carbon::parse($activity['created_at'])->diffForHumans() }}</small>
-                                            </div>
-                                            <p class="mb-1">
-                                                @if($activity['type'] == 'post')
-                                                    Posted in {{ $activity['fixture_name'] }}
-                                                @elseif($activity['type'] == 'comment')
-                                                    Commented on a post in {{ $activity['fixture_name'] }}
-                                                @endif
-                                            </p>
-                                            <p class="activity-text">{{ Str::limit($activity['content'], 100) }}</p>
-                                            <a href="{{ $activity['url'] }}" class="btn btn-sm btn-outline-primary">View</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                            <div class="text-center mt-3">
-                                <a href="{{ route('fixtures.index') }}" class="btn btn-custom btn-sm">View All Fixtures</a>
-                            </div>
-                        @else
-                            <div class="text-center py-3">
-                                <i class="fas fa-comment-slash fa-2x text-muted mb-2"></i>
-                                <p class="text-muted">No recent activity</p>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
-
-<style>
-/* Styles for Recent Activity */
-.recent-activity-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.activity-item {
-  background-color: white;
-  border-radius: var(--border-radius-md);
-  padding: 1rem;
-  border-left: 3px solid var(--green-primary);
-  transition: var(--transition-smooth);
-  margin-bottom: 0.75rem;
-}
-
-.activity-item:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-soft);
-}
-
-.activity-icon {
-  width: 34px;
-  height: 34px;
-  background: linear-gradient(to bottom right, var(--cream), white);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.activity-content {
-  flex: 1;
-}
-
-.activity-text {
-  color: var(--dark-text);
-  font-size: 0.95rem;
-  margin-bottom: 0.75rem;
-  line-height: 1.4;
-}
-
-/* Alternate colors for post vs comment */
-.activity-item:nth-child(odd) {
-  border-left-color: var(--green-primary);
-}
-
-.activity-item:nth-child(even) {
-  border-left-color: var(--gold);
-}
-</style>
 @endsection
