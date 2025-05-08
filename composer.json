@@ -9,7 +9,8 @@
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "laravel/ui": "^4.6"
+        "laravel/ui": "^4.6",
+        "livewire/livewire": "^3.6"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.3",
