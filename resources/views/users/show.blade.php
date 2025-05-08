@@ -2,57 +2,61 @@
 
 @section('content')
 <div class="profile-container">
-    <div class="text-center mb-5">
+    <div class="hero-section">
         <h1 class="profile-title">{{ $user->name }}'s Profile</h1>
-        <p class="text-muted">Welcome to your personal profile page!</p>
+        <p>Welcome to your personal profile page!</p>
     </div>
 
     {{-- Posts Section --}}
-    <div class="posts-section mb-5">
-        <h2 class="section-title">Posts</h2>
-        @if($user->posts->isNotEmpty())
-            <div class="cards-wrapper">
-                @foreach($user->posts as $post)
-                    <div class="card post-card shadow-lg">
-                        <div class="card-header">
-                            <strong>{{ $post->user->name ?? 'Unknown User' }}</strong>
-                            <small class="text-muted">Posted on {{ $post->created_at->format('M d, Y') }}</small>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">{{ $post->content }}</p>
-                            @if($post->image)
-                                <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="img-fluid my-3">
-                            @endif
-                        </div>
+    <h2 class="section-title">Posts</h2>
+    @if($user->posts->isNotEmpty())
+        <div class="cards-wrapper">
+            @foreach($user->posts as $post)
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <strong>{{ $post->user->name ?? 'Unknown User' }}</strong>
+                        <span class="text-muted">{{ $post->created_at->format('M d, Y') }}</span>
                     </div>
-                @endforeach
-            </div>
-        @else
-            <p class="no-content-message text-center">{{ $user->name }} has not created any posts yet.</p>
-        @endif
-    </div>
+                    <div class="content-card-body">
+                        <div class="post-content">{{ $post->content }}</div>
+                        @if($post->image)
+                            <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="post-image">
+                        @endif
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @else
+        <div class="no-content-message">
+            <i class="fas fa-file-alt" aria-hidden="true"></i>
+            <p>{{ $user->name }} has not created any posts yet.</p>
+        </div>
+    @endif
 
     {{-- Comments Section --}}
-    <div class="comments-section">
-        <h2 class="section-title">Comments</h2>
-        @if($user->comments->isNotEmpty())
-            <div class="cards-wrapper">
-                @foreach($user->comments as $comment)
-                    <div class="card comment-card shadow-lg">
-                        <div class="card-header">
-                            <strong>{{ $comment->user->name ?? 'Unknown User' }}</strong>
-                            <small class="text-muted">on Post: "{{ $comment->post->content ?? 'Unknown Post' }}"</small>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">{{ $comment->content }}</p>
-                            <small class="text-muted">Commented on {{ $comment->created_at->format('M d, Y') }}</small>
-                        </div>
+    <h2 class="section-title">Comments</h2>
+    @if($user->comments->isNotEmpty())
+        <div class="cards-wrapper">
+            @foreach($user->comments as $comment)
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <strong>{{ $comment->user->name ?? 'Unknown User' }}</strong>
+                        <span class="text-muted">{{ $comment->created_at->format('M d, Y') }}</span>
                     </div>
-                @endforeach
-            </div>
-        @else
-            <p class="no-content-message text-center">{{ $user->name }} has not made any comments yet.</p>
-        @endif
-    </div>
+                    <div class="content-card-body">
+                        <div class="comment-content">{{ $comment->content }}</div>
+                    </div>
+                    <div class="content-card-footer">
+                        On post: "{{ Str::limit($comment->post->content ?? 'Unknown Post', 50) }}"
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @else
+        <div class="no-content-message">
+            <i class="fas fa-comment-slash" aria-hidden="true"></i>
+            <p>{{ $user->name }} has not made any comments yet.</p>
+        </div>
+    @endif
 </div>
 @endsection
