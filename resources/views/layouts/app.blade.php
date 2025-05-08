@@ -46,9 +46,6 @@
                         <div class="collapse navbar-collapse" id="navbarContent">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Home</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link {{ request()->is('fixtures*') ? 'active' : '' }}" href="{{ route('fixtures.index') }}">Fixtures</a>
                                 </li>
                                 @auth
@@ -57,6 +54,17 @@
                                 </li>
                                 @endauth
                             </ul>
+
+                            <!-- Search Field (Simple Non-Livewire Version) -->
+                            @auth
+                            <div class="d-flex mx-3" style="width: 250px; position: relative;">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                    <input type="text" class="form-control" placeholder="Search users..." aria-label="Search users" id="userSearchInput">
+                                </div>
+                                <div class="position-absolute w-100" style="top: 100%; z-index: 1000; display: none;" id="searchResults"></div>
+                            </div>
+                            @endauth
 
                             <div class="d-flex align-items-center">
                                 @auth
@@ -92,15 +100,6 @@
             </div>
         </header>
 
-        <!-- Search Bar (Only on Dashboard) -->
-        @if(request()->is('dashboard*') && auth()->check())
-        <div class="dashboard-search-container">
-            <div class="container">
-                @livewire('search-users')
-            </div>
-        </div>
-        @endif
-
         <!-- Main Content -->
         <div class="page-container py-4">
             @yield('content')
@@ -124,5 +123,76 @@
 
         <!-- Additional Scripts -->
         @yield('scripts')
+
+        <!-- User Search JavaScript -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('userSearchInput');
+            const searchResults = document.getElementById('searchResults');
+
+            if (searchInput) {
+                let debounceTimer;
+
+                searchInput.addEventListener('input', function() {
+                    const query = this.value.trim();
+
+                    // Clear previous timer
+                    clearTimeout(debounceTimer);
+
+                    // Hide results if query is empty
+                    if (query.length < 2) {
+                        searchResults.style.display = 'none';
+                        return;
+                    }
+
+                    // Set a new timer
+                    debounceTimer = setTimeout(function() {
+                        // Fetch results
+                        fetch(`/api/users/search?q=${query}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                // Clear previous results
+                                searchResults.innerHTML = '';
+
+                                if (data.length === 0) {
+                                    // No results found
+                                    searchResults.innerHTML = '<div class="list-group-item">No users found</div>';
+                                } else {
+                                    // Create results list
+                                    const resultsList = document.createElement('div');
+                                    resultsList.className = 'list-group';
+
+                                    data.forEach(user => {
+                                        const item = document.createElement('a');
+                                        item.href = `/users/${user.id}`;
+                                        item.className = 'list-group-item list-group-item-action';
+                                        item.innerHTML = `
+                                            <div class="fw-bold">${user.name}</div>
+                                            <small class="text-muted">${user.email}</small>
+                                        `;
+                                        resultsList.appendChild(item);
+                                    });
+
+                                    searchResults.appendChild(resultsList);
+                                }
+
+                                // Show results
+                                searchResults.style.display = 'block';
+                            })
+                            .catch(error => {
+                                console.error('Error fetching search results:', error);
+                            });
+                    }, 300); // 300ms debounce
+                });
+
+                // Hide results when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!searchInput.contains(event.target) && !searchResults.contains(event.target)) {
+                        searchResults.style.display = 'none';
+                    }
+                });
+            }
+        });
+        </script>
     </body>
 </html>

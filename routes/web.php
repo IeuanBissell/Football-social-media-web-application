@@ -15,7 +15,7 @@ Route::get('/', function () {
 
 Route::get('/fixtures', [FixtureController::class, 'index'])->name('fixtures.index');
 Route::get('/fixtures/{fixture}', [FixtureController::class, 'show'])->name('fixtures.show');
-Route::get('/users/{user}', [UserController::class, 'show'])->name('user.show'); // Using model binding
+Route::get('/users/{user}', [UserController::class, 'show'])->name('user.show');
 
 // Authenticated Routes
 Route::middleware(['auth'])->group(function () {
@@ -66,6 +66,20 @@ Route::middleware(['auth'])->group(function () {
 
     // API route for getting unread notification count (for AJAX requests)
     Route::get('/api/notifications/count', [NotificationController::class, 'getUnreadCount'])->name('notifications.count');
+    Route::get('/api/users/search', function (Illuminate\Http\Request $request) {
+        $query = $request->input('q');
+
+        if (strlen($query) < 2) {
+            return response()->json([]);
+        }
+
+        $users = App\Models\User::where('name', 'like', '%' . $query . '%')
+            ->orWhere('email', 'like', '%' . $query . '%')
+            ->limit(10)
+            ->get(['id', 'name', 'email']);
+
+        return response()->json($users);
+    })->middleware('auth')->name('api.users.search');
 });
 
 // Include Auth Routes

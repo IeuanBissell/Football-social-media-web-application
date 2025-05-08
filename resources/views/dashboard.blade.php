@@ -176,3 +176,111 @@
     </div>
 </div>
 @endsection
+@section('scripts')
+<style>
+/* Dashboard Card Animations */
+.card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.card-animated {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card-hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+/* Dashboard Clock */
+.dashboard-clock {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+/* Optional: Make notification items look nicer with animations */
+.notification-item {
+    transition: background-color 0.3s;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+
+.notification-item:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Time-based greeting
+    const welcomeHeading = document.querySelector('.welcome-section h1');
+    if (welcomeHeading) {
+        const currentHour = new Date().getHours();
+        let greeting;
+
+        if (currentHour < 12) {
+            greeting = 'Good Morning';
+        } else if (currentHour < 18) {
+            greeting = 'Good Afternoon';
+        } else {
+            greeting = 'Good Evening';
+        }
+
+        // Get the username from the existing heading
+        const usernameText = welcomeHeading.textContent;
+        const username = usernameText.split(',')[1]?.trim().replace('!', '') || '';
+
+        // Update the heading with the time-based greeting
+        welcomeHeading.textContent = `${greeting}, ${username}!`;
+    }
+
+    // Card animations
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card, index) => {
+        // Add a slight delay to each card for a cascade effect
+        setTimeout(() => {
+            card.classList.add('card-animated');
+        }, 100 * index);
+
+        // Add hover effects
+        card.addEventListener('mouseenter', function() {
+            this.classList.add('card-hover');
+        });
+
+        card.addEventListener('mouseleave', function() {
+            this.classList.remove('card-hover');
+        });
+    });
+
+    // Live clock and date
+    const welcomeSection = document.querySelector('.welcome-section');
+    if (welcomeSection) {
+        const clockDiv = document.createElement('div');
+        clockDiv.className = 'dashboard-clock mt-2';
+
+        function updateClock() {
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            clockDiv.textContent = now.toLocaleDateString('en-US', options);
+        }
+
+        updateClock();
+        setInterval(updateClock, 1000);
+        welcomeSection.appendChild(clockDiv);
+    }
+});
+</script>
+@endsection

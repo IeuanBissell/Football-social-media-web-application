@@ -5,6 +5,7 @@
  */
 
 import './bootstrap';
+import './dashboard.js';
 import { createApp } from 'vue';
 
 /**

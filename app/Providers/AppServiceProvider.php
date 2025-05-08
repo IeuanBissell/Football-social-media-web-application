@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
-use App\Http\Livewire\SearchUsers;
+use App\Http\Livewire\UserSearch;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +25,6 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
 
         // Register Livewire components
-        Livewire::component('search-users', SearchUsers::class);
+        Livewire::component('user-search', UserSearch::class);
     }
 }
