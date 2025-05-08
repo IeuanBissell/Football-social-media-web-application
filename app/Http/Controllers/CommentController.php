@@ -22,6 +22,11 @@ class CommentController extends Controller
             'content' => $request->content,
         ]);
 
+        // Send notification to post owner (if commenter is not the post owner)
+        if ($post->user_id !== Auth::id()) {
+            $post->user->notify(new \App\Notifications\NewCommentNotification($post, $comment));
+        }
+
         if ($request->ajax()) {
             return response()->json([
                 'comment' => $comment,
